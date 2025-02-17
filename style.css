@@ -112,7 +112,7 @@ section {
 }
 
 
-/*style for intro*/
+/*style for intro section*/
 .intro {
     position: relative;
     width: 100%;
@@ -189,7 +189,7 @@ section {
 }
 
 
-/*style for about*/
+/*style for about section*/
 .about{
     margin-top: 25vh;
 }
@@ -240,7 +240,7 @@ section {
     background-color: #41a884;
 }
 
-/*style for services*/
+/*style for services section*/
 .services {
     margin-top: 15vh;
 }
@@ -322,7 +322,7 @@ section {
     transform: translateY(0);
 }
 
-/*style for menu*/
+/*style for menu section*/
 .favorites {
     margin-top: 15vh;
     text-align: center;
@@ -512,4 +512,78 @@ section {
     padding-top: 3vh;
     color: #ffffff;
     border-top: 0.1rem solid rgba(255, 254, 254, 0.103);
+}
+
+
+/*style for about page*/
+.intro-banner {
+    position: relative;
+    width: 100%;
+    height: 90vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+}
+
+.intro-banner .banner{
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90vw;
+    height: 90vh;
+}
+
+.intro-banner .banner img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: brightness(35%);
+    transition: opacity 1s ease-in-out;
+}
+
+
+.intro-banner .info h1 {
+    color: #ffffff;
+    text-align: center;
+    position: relative;
+    z-index: 1; 
+    font-size: 7rem;
+    margin-top: 2rem;
+    font-family: "Birthstone", serif;
+}
+
+#about-page .about .container .info h2{
+    color: #356D59;
+    font-size: 4rem;
+    margin-bottom: 15px;
+}
+
+.about-pics{
+    width: 100%;
+    height: 40vh;
+}
+
+.about-pics .container{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    width: 80vw;
+    height: 30vh;
+    gap: 1rem;
+    padding: 0 8rem;
+}
+
+.about-pics .container img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: brightness(75%);
+    border-radius: 15px;
 }
