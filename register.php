@@ -1,0 +1,60 @@
+<?php
+ session_start();
+ include('mycon.php');
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cafe Luntian Register</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="img/logo2.png">
+    <script src="https://kit.fontawesome.com/1e3d5daa34.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <link rel="stylesheet" href="style12.css">
+    <link rel="stylesheet" href="style22.css">
+</head>
+<body>
+<div class="nav__toggle" id="nav-toggle">
+        <i class="uil uil-bars"></i>
+    </div>
+
+    <main class="main">
+
+    <div class="register-form">
+        <div class="container">
+            <div class="main2">
+                <div class="content2">
+                    <h2>Register</h2>
+                    <form method="POST" action="RegisterScript.php">
+                        <div class="input-pair">
+                          <input type="text" name="User_FName" placeholder="First Name" required>
+                        </div>
+                        <div class="input-pair">
+                          <input type="text" name="User_LName" placeholder="Last Name" required>
+                          <input type="text" name="ContactNo" placeholder="Contact No." required> 
+                        </div>     
+                        <div class="input-pair">        
+                            <select name="Position" required>
+                                <option value="" disabled selected>Position/Role</option>
+                                <option value="Admin">Admin</option>
+                                <option value="Customer">Customer</option>
+                            </select>       
+                        </div>
+                        <input type="email" name="Email" placeholder="Email" required>
+                        <input type="password" name="Password" placeholder="Password" required>  
+  
+                        <input type="submit" id="reg-btn" name="register" value="Register"/>
+                    </form>
+                </div>
+                <div class="form-img">
+                    <img src="img/logoo.jpg" alt="Background Image">
+                </div>
+            </div>
+        </div>
+    </div>
+    </main>
+    
+</body>
+</html>
