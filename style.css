@@ -785,18 +785,29 @@ input[type=text] {
     text-align: center;
 }
 
-.menu-page h2 {
+.menu-page h2,.add h3 {
     color: #555;
     font-size: 2.5rem;
     font-family: "Birthstone", serif;
     text-align: left;
 }
 
-.menu-page span {
+.add h3{
+    background-color: #356D59;
+    color: #fff;
+    text-align: center;
+}
+
+.menu-page span{
     color: #356D59;
     font-size: 3rem;
     font-family: "Birthstone", serif;
     padding: .6rem;
+}
+
+.add span{
+    color: #fff;
+    font-size: 3.2rem;
 }
 
 .menu-container {
@@ -806,6 +817,7 @@ input[type=text] {
     padding: 1rem 0;
     scroll-snap-type: x mandatory;
     overflow: hidden; 
+    margin-bottom: 3rem;
 }
 
 .menu-items {
@@ -835,7 +847,7 @@ input[type=text] {
 
 .menu-item img {
     width: 100%;
-    height: auto;
+    height: 30vh;
     object-fit: cover;
     border-radius: 15px 15px 0 0;
 }
