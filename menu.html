@@ -348,53 +348,55 @@
 
         <script>
             //scroll btns for menu items
-            const leftBtn = document.querySelector('.left-btn');
-            const rightBtn = document.querySelector('.right-btn');
-            const menuItems = document.querySelector('.menu-items');
-            const menuItem = document.querySelector('.menu-item'); 
-        
-            let scrollAmount = 0;
-        
-            // Get the width of a single menu item
-            const itemWidth = menuItem.offsetWidth;
-        
-            // Scroll by 3 items at a time
-            const scrollStep = itemWidth * 3;
-        
-            function toggleButtons() {
-                if (scrollAmount > 0) {
-                    leftBtn.style.display = 'block'; 
-                } else {
-                    leftBtn.style.display = 'none'; 
+            document.querySelectorAll('.menu-container').forEach(container => {
+                const leftBtn = container.querySelector('.left-btn');
+                const rightBtn = container.querySelector('.right-btn');
+                const menuItems = container.querySelector('.menu-items');
+                const menuItem = container.querySelector('.menu-item'); 
+                
+                let scrollAmount = 0;
+                
+                if (!menuItem) return; // Exit if there are no items
+
+                const itemWidth = menuItem.offsetWidth;
+                const scrollStep = itemWidth * 2; // Scroll by 2 items
+
+                function toggleButtons() {
+                    if (scrollAmount > 0) {
+                        leftBtn.style.display = 'block'; 
+                    } else {
+                        leftBtn.style.display = 'none'; 
+                    }
+
+                    if (scrollAmount < menuItems.scrollWidth - menuItems.clientWidth) {
+                        rightBtn.style.display = 'block'; 
+                    } else {
+                        rightBtn.style.display = 'none'; 
+                    }
                 }
-        
-                if (scrollAmount < menuItems.scrollWidth - menuItems.clientWidth) {
-                    rightBtn.style.display = 'block'; 
-                } else {
-                    rightBtn.style.display = 'none'; 
-                }
-            }
-        
-            // call toggleButtons 
-            toggleButtons();
-        
-            leftBtn.addEventListener('click', () => {
-                // Scroll the menu left 
-                if (scrollAmount > 0) {
-                    scrollAmount -= scrollStep; // scroll by 3 items
-                    menuItems.style.transform = `translateX(-${scrollAmount}px)`;
-                    toggleButtons(); // update button visibility
-                }
+
+                toggleButtons();
+
+                leftBtn.addEventListener('click', () => {
+                    // Scroll the menu left 
+                    if (scrollAmount > 0) {
+                        scrollAmount -= scrollStep; // scroll by 2 items
+                        menuItems.style.transform = `translateX(-${scrollAmount}px)`;
+                        toggleButtons(); // update button visibility
+                    }
+                });
+
+                rightBtn.addEventListener('click', () => {
+                    // Scroll the menu right 
+                    if (scrollAmount < menuItems.scrollWidth - menuItems.clientWidth) {
+                        scrollAmount += scrollStep;
+                        menuItems.style.transform = `translateX(-${scrollAmount}px)`;
+                        toggleButtons();
+                    }
+                });
             });
-        
-            rightBtn.addEventListener('click', () => {
-                // Scroll the menu right 
-                if (scrollAmount < menuItems.scrollWidth - menuItems.clientWidth) {
-                    scrollAmount += scrollStep; 
-                    menuItems.style.transform = `translateX(-${scrollAmount}px)`;
-                    toggleButtons(); 
-                }
-            });
+
         </script> 
+ 
     </body>
 </html>
