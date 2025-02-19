@@ -8,7 +8,7 @@
 }
 
 body{
-    background-color: #acdfcd;
+    background-color: #356D59;
 }
 
 .container {
@@ -72,11 +72,11 @@ input, select {
 
 input:focus, select:focus {
     background: transparent;
-    border: 1px solid #0292b7;
+    border: 1px solid #356D59;
 }
 
 p.account a {
-    color: #0292b7;
+    color: #356D59;
 }
 
 p.account a:hover {
@@ -206,52 +206,6 @@ p.account a:hover {
     flex: 1;
     min-width: 0; 
 }
-
-
-/* style for captcha*/
-.captcha {
-    font-size: 16px;
-    font-weight: bold;
-    letter-spacing: 4px;
-    text-align: center;
-    margin-bottom: 10px;
-    border: 1px solid #ccc;
-    padding: 5px;
-    background-color: #f9f9f9;
-    border-radius: 10px;
-    width:50%
-  }
-  .captcha-refresh {
-    cursor: pointer;
-    background-color: #0292b7;
-    color: white;
-    text-decoration: none;
-    padding: 7px;
-    border-radius: 10px;
-    text-align: center;
-    width:50%;
-  }
-  .captcha-refresh:hover {
-    color: white;
-    background-color:#036983;
-  }
-
-
-  .captcha-container {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 10px;
-  }
-  
-  .captcha {
-    margin: 5px;
-  }
-  
-  .captcha-refresh span {
-    cursor: pointer;
-  }
-  
   
 
 @media (max-width: 736px) {
