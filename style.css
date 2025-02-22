@@ -854,19 +854,20 @@ input[type=text] {
 
 .menu-page .info {
     padding: 15px 0;
-    background: #f4f4f4;
+    background: #356D59;
     border-radius: 0 0 15px 15px;
     width: 100%;
-    text-align: center;
+    text-align: left;
     box-sizing: border-box;
 }
 
 .menu-page .info h3 {
-    font-size: 1.2rem;
+    font-size: 1.05rem;
     margin-top: 5px;
     font-style: italic;
-    color: #356D59;
+    color: #fff;
     margin: 0;
+    padding-left: .8rem;
 }
 
 .menu-page .info p {
@@ -881,7 +882,7 @@ input[type=text] {
     top: 50%;
     transform: translateY(-50%);
     background: rgba(0, 0, 0, 0.3);
-    color: white;
+    color: #fff;
     border: none;
     padding: 10px;
     cursor: pointer;
@@ -900,6 +901,36 @@ input[type=text] {
 .scroll-btn:hover {
     background: rgba(0, 0, 0, 0.5);
 }
+
+.add-btn {
+    position: absolute;
+    bottom: 4vh; 
+    right: .8vw;
+    width: 2.5rem; 
+    height: 2.5rem;
+    background-color: #e7eeec;
+    color: #356D59;
+    font-size: 1.5rem;
+    font-weight: bold;
+    border: 3px #62a28c solid;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.add-btn:hover {
+    transform: scale(1.1);
+}
+
+.menu-item {
+    position: relative;
+}
+
+
 
 
 /*style for reservation-page*/
