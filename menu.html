@@ -20,7 +20,7 @@
                     <li><a href="index.html">Home</a></li>
                     <li><a href="about.html">About</a></li>
                     <li><a href="services.html">Services</a></li>
-                    <li><a href="menu.html" style="color: #41a884;">Menu</a></li>
+                    <li><a href="menu.html">Menu</a></li>
                     <li class="dropdown">
                         <a href="#">Pages</a>
                         <ul class="dropdown-content">
@@ -29,6 +29,12 @@
                         </ul>
                     </li>
                     <li><a href="contact.html">Contact</a></li>
+                    <li class="cart-icon">
+                        <a href="cart.html">
+                            <i class="fa-solid fa-bag-shopping"></i>               
+                            <span id="cart-count">0</span>
+                        </a>
+                    </li>
                 </ul>
             </nav>
         </section>
@@ -48,63 +54,63 @@
             <div class="menu-container">
                 <button class="scroll-btn left-btn">&#10094;</button>
                 <ul class="menu-items">
-                    <li class="menu-item">
+                    <li class="menu-item" data-name="Caramel Macchiato" data-type="Hotdrinks Coffee" data-price="₱99.0" data-image="img/caramelMacchiato.jpg">
                         <img src="img/caramelMacchiato.jpg" alt="Caramel Macchiato">
                         <div class="info">
                             <h3>Caramel Macchiato</h3>
                         </div>
                         <button class="add-btn">+</button>
                     </li>
-                    <li class="menu-item">
+                    <li class="menu-item" data-name="Salted Caramel" data-type="Hotdrinks Coffee" data-price="₱99.0" data-image="img/saltedCaramel.jpg">
                         <img src="img/saltedCaramel.jpg" alt="Salted Caramel">
                         <div class="info">
                             <h3>Salted Caramel</h3>
                         </div>
                         <button class="add-btn">+</button>
                     </li>
-                    <li class="menu-item">
+                    <li class="menu-item" data-name="Cappuccino" data-type="Hotdrinks Coffee" data-price="₱99.0" data-image="img/cappuccino.png">
                         <img src="img/cappuccino.png" alt="Cappuccino">
                         <div class="info">
                             <h3>Cappuccino</h3>
                         </div>
                         <button class="add-btn">+</button>
                     </li>
-                    <li class="menu-item">
+                    <li class="menu-item" data-name="Spanish Latte" data-type="Hotdrinks Coffee" data-price="₱99.0" data-image="img/spanishLatte.jpg">
                         <img src="img/spanishLatte.jpg" alt="Spanish Latte">
                         <div class="info">
                             <h3>Spanish Latte</h3>
                         </div>
                         <button class="add-btn">+</button>
                     </li>
-                    <li class="menu-item">
+                    <li class="menu-item" data-name="Americano" data-type="Hotdrinks Coffee" data-price="₱99.0" data-image="img/americano.jpg">
                         <img src="img/americano.jpg" alt="Americano">
                         <div class="info">
                             <h3>Americano</h3>
                         </div>
                         <button class="add-btn">+</button>
                     </li>
-                    <li class="menu-item">
+                    <li class="menu-item" data-name="White Chocolate Mocha" data-type="Hotdrinks Coffee" data-price="₱99.0" data-image="img/whitechocmocha.jpg">
                         <img src="img/whitechocmocha.jpg" alt="White Chocolate Mocha">
                         <div class="info">
                             <h3>White Chocolate Mocha</h3>
                         </div>
                         <button class="add-btn">+</button>
                     </li>
-                    <li class="menu-item">
+                    <li class="menu-item" data-name="Cafe Latte" data-type="Hotdrinks Coffee" data-price="₱99.0" data-image="img/cafeLatte.jpg">
                         <img src="img/cafeLatte.jpg" alt="Cafe Latte">
                         <div class="info">
                             <h3>Cafe Latte</h3>
                         </div>
                         <button class="add-btn">+</button>
                     </li>
-                    <li class="menu-item">
+                    <li class="menu-item" data-name="Vanilla Latte" data-type="Hotdrinks Coffee" data-price="₱99.0" data-image="img/vanillaLatte.jpg">
                         <img src="img/vanillaLatte.jpg" alt="Vanilla Latte">
                         <div class="info">
                             <h3>Vanilla Latte</h3>
                         </div>
                         <button class="add-btn">+</button>
                     </li>
-                    <li class="menu-item">
+                    <li class="menu-item" data-name="Espresso"  data-type="Hotdrinks Coffee" data-price="₱99.0" data-image="img/espresso.jpg">
                         <img src="img/espresso.jpg" alt="Espresso">
                         <div class="info">
                             <h3>Espresso</h3>
@@ -119,42 +125,42 @@
             <div class="menu-container">
                 <button class="scroll-btn left-btn">&#10094;</button>
                 <ul class="menu-items">
-                    <li class="menu-item">
+                    <li class="menu-item" data-name="Caramel Macchiato" data-type="Hotdrinks Non-Coffee" data-price="₱99.0" data-image="img/carMachNonCof.jpg">
                         <img src="img/carMachNonCof.jpg" alt="Caramel Macchiato">
                         <div class="info">
                             <h3>Caramel Macchiato</h3>
                         </div>
                         <button class="add-btn">+</button>
                     </li>
-                    <li class="menu-item">
+                    <li class="menu-item" data-name="Salted Caramel" data-type="Hotdrinks Non-Coffee" data-price="₱99.0" data-image="img/saltCarNonCof.jpg">
                         <img src="img/saltCarNonCof.jpg" alt="Salted Caramel">
                         <div class="info">
                             <h3>Salted Caramel</h3>
                         </div>
                         <button class="add-btn">+</button>
                     </li>
-                    <li class="menu-item">
+                    <li class="menu-item" data-name="Chocolate" data-type="Hotdrinks Non-Coffee" data-price="₱99.0" data-image="img/chocolate.jpg">
                         <img src="img/chocolate.jpg" alt="Chocolate">
                         <div class="info">
                             <h3>Chocolate</h3>
                         </div>
                         <button class="add-btn">+</button>
                     </li>
-                    <li class="menu-item">
+                    <li class="menu-item" data-name="White Chocolate" data-type="Hotdrinks Non-Coffee" data-price="₱99.0" data-image="img/whitechocNonCof.jpg">
                         <img src="img/whitechocNonCof.jpg" alt="White Chocolate">
                         <div class="info">
                             <h3>White Chocolate</h3>
                         </div>
                         <button class="add-btn">+</button>
                     </li>
-                    <li class="menu-item">
+                    <li class="menu-item" data-name="Vanilla" data-type="Hotdrinks Non-Coffee" data-price="₱99.0" data-image="img/vanilla.jpg">
                         <img src="img/vanilla.jpg" alt="Vanilla">
                         <div class="info">
                             <h3>Vanilla</h3>
                         </div>
                         <button class="add-btn">+</button>
                     </li>
-                    <li class="menu-item">
+                    <li class="menu-item" data-name="Caramel" data-type="Hotdrinks Non-Coffee" data-price="₱99.0" data-image="img/carMachNonCof.jpg">
                         <img src="img/carMachNonCof.jpg" alt="Caramel">
                         <div class="info">
                             <h3>Caramel</h3>
@@ -170,56 +176,56 @@
             <div class="menu-container">
                 <button class="scroll-btn left-btn">&#10094;</button>
                 <ul class="menu-items">
-                    <li class="menu-item">
+                    <li class="menu-item" data-name="Americano" data-type="Iced Coffee" data-price="₱129.0" data-image="img/americanoIced.jpg">
                         <img src="img/americanoIced.jpg" alt="Americano">
                         <div class="info">
                             <h3>Americano</h3>
                         </div>
                         <button class="add-btn">+</button>
                     </li>
-                    <li class="menu-item">
+                    <li class="menu-item" data-name="Caramel Macchiato" data-type="Iced Coffee" data-price="₱129.0" data-image="img/caramelMacIced.jpg">
                         <img src="img/caramelMacIced.jpg" alt="Caramel Macchiato">
                         <div class="info">
                             <h3>Caramel Macchiato</h3>
                         </div>
                         <button class="add-btn">+</button>
                     </li>
-                    <li class="menu-item">
+                    <li class="menu-item" data-name="Salted Caramel" data-type="Iced Coffee" data-price="₱129.0" data-image="img/saltedcarIced.jpg">
                         <img src="img/saltedcarIced.jpg" alt="Salted Caramel">
                         <div class="info">
                             <h3>Salted Caramel</h3>
                         </div>
                         <button class="add-btn">+</button>
                     </li>
-                    <li class="menu-item">
+                    <li class="menu-item" data-name="Spanish Latte" data-type="Iced Coffee" data-price="₱129.0" data-image="img/spanishLatteIced.jpg">
                         <img src="img/spanishLatteIced.jpg" alt="Spanish Latte">
                         <div class="info">
                             <h3>Spanish Latte</h3>
                         </div>
                         <button class="add-btn">+</button>
                     </li>
-                    <li class="menu-item">
+                    <li class="menu-item" data-name="Cafe Mocha" data-type="Iced Coffee" data-price="₱129.0" data-image="img/cafeMochaIced.jpg">
                         <img src="img/cafeMochaIced.jpg" alt="Cafe Mocha">
                         <div class="info">
                             <h3>Cafe Mocha</h3>
                         </div>
                         <button class="add-btn">+</button>
                     </li>
-                    <li class="menu-item">
+                    <li class="menu-item" data-name="White Chocolate Mocha" data-type="Iced Coffee" data-price="₱129.0" data-image="img/whitechocIced.jpg">
                         <img src="img/whitechocIced.jpg" alt="White Chocolate Mocha">
                         <div class="info">
                             <h3>White Chocolate Mocha</h3>
                         </div>
                         <button class="add-btn">+</button>
                     </li>
-                    <li class="menu-item">
+                    <li class="menu-item" data-name="Dirty Matcha" data-type="Iced Coffee" data-price="₱129.0" data-image="img/dirtymatchaIced.jpg">
                         <img src="img/dirtymatchaIced.jpg" alt="Dirty Matcha">
                         <div class="info">
                             <h3>Dirty Matcha</h3>
                         </div>
                         <button class="add-btn">+</button>
                     </li>
-                    <li class="menu-item">
+                    <li class="menu-item" data-name="Vanilla Latte" data-type="Iced Coffee" data-price="₱129.0" data-image="img/vanillaLatIced.jpg">
                         <img src="img/vanillaLatIced.jpg" alt="Vanilla Latte">
                         <div class="info">
                             <h3>Vanilla Latte</h3>
@@ -235,42 +241,42 @@
             <div class="menu-container">
                 <button class="scroll-btn left-btn">&#10094;</button>
                 <ul class="menu-items">
-                    <li class="menu-item">
+                    <li class="menu-item" data-name="Dark Chocolate" data-type="Iced Non-Coffee" data-price="₱129.0" data-image="img/darkChocoNonCof.jpg">
                         <img src="img/darkChocoNonCof.jpg" alt="Dark Chocolate">
                         <div class="info">
                             <h3>Dark Chocolate</h3>
                         </div>
                         <button class="add-btn">+</button>
                     </li>
-                    <li class="menu-item">
+                    <li class="menu-item" data-name="Caramel Macchiato" data-type="Iced Non-Coffee" data-price="₱129.0" data-image="img/carMachNonCof.jpg">
                         <img src="img/carMachNonCof.jpg" alt="Caramel Macchiato">
                         <div class="info">
                             <h3>Caramel Macchiato</h3>
                         </div>
                         <button class="add-btn">+</button>
                     </li>
-                    <li class="menu-item">
+                    <li class="menu-item" data-name="Salted Caramel" data-type="Iced Non-Coffee" data-price="₱129.0" data-image="img/saltCarNonCof.jpg">
                         <img src="img/saltCarNonCof.jpg" alt="Salted Caramel">
                         <div class="info">
                             <h3>Salted Caramel</h3>
                         </div>
                         <button class="add-btn">+</button>
                     </li>
-                    <li class="menu-item">
+                    <li class="menu-item" data-name="White Choco" data-type="Iced Non-Coffee" data-price="₱129.0" data-image="img/whitechocNonCof.jpg">
                         <img src="img/whitechocNonCof.jpg" alt="White Choco">
                         <div class="info">
                             <h3>White Choco</h3>
                         </div>
                         <button class="add-btn">+</button>
                     </li>
-                    <li class="menu-item">
+                    <li class="menu-item" data-name="Dirty Matcha" data-type="Iced Non-Coffee" data-price="₱129.0" data-image="img/dirtMatchaNonCof.jpg">
                         <img src="img/dirtMatchaNonCof.jpg" alt="Dirty Matcha">
                         <div class="info">
                             <h3>Dirty Matcha</h3>
                         </div>
                         <button class="add-btn">+</button>
                     </li>
-                    <li class="menu-item">
+                    <li class="menu-item" data-name="Milky Vanilla" data-type="Iced Non-Coffee" data-price="₱129.0" data-image="img/milkyvanilla.jpg">
                         <img src="img/milkyvanilla.jpg" alt="Milky Vanilla">
                         <div class="info">
                             <h3>Milky Vanilla</h3>
@@ -287,35 +293,35 @@
             <div class="menu-container">
                 <button class="scroll-btn left-btn">&#10094;</button>
                 <ul class="menu-items">
-                    <li class="menu-item">
+                    <li class="menu-item" data-name="Java Chip" data-type="Frappe" data-price="₱149.0" data-image="img/javachip.jpg">
                         <img src="img/javachip.jpg" alt="Java Chip">
                         <div class="info">
                             <h3>Java Chip</h3>
                         </div>
                         <button class="add-btn">+</button>
                     </li>
-                    <li class="menu-item">
+                    <li class="menu-item" data-name="Salted Caramel" data-type="Frappe" data-price="₱149.0" data-image="img/saltcarFrappe.jpg">
                         <img src="img/saltcarFrappe.jpg" alt="Salted Caramel">
                         <div class="info">
                             <h3>Salted Caramel</h3>
                         </div>
                         <button class="add-btn">+</button>
                     </li>
-                    <li class="menu-item">
+                    <li class="menu-item" data-name="White Chocolate" data-type="Frappe" data-price="₱149.0" data-image="img/whitechocFrappe.jpg">
                         <img src="img/whitechocFrappe.jpg" alt="White Chocolate">
                         <div class="info">
                             <h3>White Chocolate</h3>
                         </div>
                         <button class="add-btn">+</button>
                     </li>
-                    <li class="menu-item">
+                    <li class="menu-item" data-name="Dark Chocolate" data-type="Frappe" data-price="₱149.0" data-image="img/darkChocFrappe.jpg">
                         <img src="img/darkChocFrappe.jpg" alt="Dark Chocolate">
                         <div class="info">
                             <h3>Dark Chocolate</h3>
                         </div>
                         <button class="add-btn">+</button>
                     </li>
-                    <li class="menu-item">
+                    <li class="menu-item" data-name="Matcha" data-type="Frappe" data-price="₱149.0" data-image="img/matchaFrappe.jpg">
                         <img src="img/matchaFrappe.jpg" alt="Matcha">
                         <div class="info">
                             <h3>Matcha</h3>
@@ -330,7 +336,20 @@
                 <h3>ADD <span>10+</span> FOR COFFEE SHOT</h3>
             </div>
         </section>
-        
+
+        <div class="cart-sidebar" id="cartSidebar">
+            <div class="cart-header">
+                <h2>Your Cart</h2>
+                <button id="closeCart">&times;</button>
+            </div>
+            <div class="cart-items" id="cartItems">
+                <p class="empty-cart-msg">Your cart is empty</p>
+            </div>
+            <div class="cart-footer">
+                <p>Subtotal: <span id="cart-subtotal">₱0.00</span></p>
+                <button class="checkout-btn">Checkout</button>
+            </div>
+        </div>
 
         <section class="footer-banner">
             <img src="img/banner.jpg">
@@ -430,6 +449,107 @@
                 });
             });
 
+            // cart sidebar
+            document.addEventListener("DOMContentLoaded", () => {
+                const cartSidebar = document.querySelector(".cart-sidebar");
+                const cartItemsContainer = document.querySelector(".cart-items");
+                const cartIcon = document.querySelector(".cart-icon a");
+                const closeCartBtn = document.getElementById("closeCart");
+                const cartCount = document.getElementById("cart-count");
+                const subtotalElement = document.getElementById("cart-subtotal");
+
+                let cart = [];
+
+                // Update cart display
+                const updateCartDisplay = () => {
+                    if (cart.length === 0) {
+                        cartItemsContainer.innerHTML = `<div class="empty-cart"><h2>Your cart is empty</h2></div>`;
+                        cartCount.textContent = "0";
+                        subtotalElement.textContent = "₱0.00"; // Reset subtotal
+                        return;
+                    }
+
+                    let subtotal = 0;
+
+                    cartItemsContainer.innerHTML = cart.map((item, index) => {
+                        let itemTotal = item.price * item.quantity;
+                        subtotal += itemTotal; // Add to subtotal
+
+                        return `
+                        <div class="cart-item">
+                            <img src="${item.image}" alt="${item.name}" width="50">
+                            <p>${item.name} (${item.type})</p> 
+                            <div class="cart-controls">
+                                <button class="qty-btn decrease" data-index="${index}">
+                                    <i class="fas fa-minus"></i>
+                                </button>
+                                <span>${item.quantity}</span>
+                                <button class="qty-btn increase" data-index="${index}">
+                                    <i class="fas fa-plus"></i>
+                                </button>
+                                <button class="remove-btn" data-index="${index}">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                            <p class="total">₱${itemTotal.toFixed(2)}</p>
+                        </div>`;
+                    }).join("");
+
+                    cartCount.textContent = cart.reduce((total, item) => total + item.quantity, 0);
+                    subtotalElement.textContent = `₱${subtotal.toFixed(2)}`; // Update subtotal
+                };
+
+                // Add item to cart
+                document.querySelectorAll(".add-btn").forEach(button => {
+                    button.addEventListener("click", () => {
+                        const menuItem = button.closest(".menu-item");
+                        const name = menuItem.dataset.name;
+                        const type = menuItem.dataset.type; 
+                        const price = parseFloat(menuItem.dataset.price.replace("₱", "").trim());
+                        const image = menuItem.dataset.image;
+
+                        // Ensure uniqueness by checking both name and type
+                        let item = cart.find(i => i.name === name && i.type === type);
+
+                        if (item) {
+                            item.quantity++;
+                        } else {
+                            cart.push({ name, type, price, quantity: 1, image });
+                        }
+
+                        updateCartDisplay();
+                    });
+                });
+
+                // Cart button actions (increase, decrease, delete)
+                cartItemsContainer.addEventListener("click", (e) => {
+                    if (e.target.closest(".increase")) {
+                        cart[e.target.closest(".increase").dataset.index].quantity++;
+                    } else if (e.target.closest(".decrease")) {
+                        let item = cart[e.target.closest(".decrease").dataset.index];
+                        if (item.quantity > 1) {
+                            item.quantity--;
+                        } else {
+                            cart.splice(e.target.closest(".decrease").dataset.index, 1); // Remove item if quantity is 0
+                        }
+                    } else if (e.target.closest(".remove-btn")) {
+                        cart.splice(e.target.closest(".remove-btn").dataset.index, 1); // Remove item completely
+                    }
+
+                    updateCartDisplay();
+                });
+
+                // Toggle cart sidebar
+                cartIcon.addEventListener("click", (e) => {
+                    e.preventDefault();
+                    cartSidebar.classList.toggle("active");
+                    updateCartDisplay();
+                });
+
+                // Close cart sidebar
+                closeCartBtn.addEventListener("click", () => cartSidebar.classList.remove("active"));
+            });
+            
         </script> 
  
     </body>
