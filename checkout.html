@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width", initial-scale="1.0">
+        <title>Cafe Luntian</title>
+        <link rel="icon" type="image/png" sizes="32x32" href="img/logo2.png">
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+        <section class="nav">
+            <a href="index.html"><img src="img/logo.png" class="logo"></a>
+            <nav class="navbar">
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html"">About</a></li>
+                    <li><a href="services.html">Services</a></li>
+                    <li><a href="menu.html">Menu</a></li>
+                    <li class="dropdown">
+                        <a href=""  style="color: #41a884;">Pages</a>
+                        <ul class="dropdown-content">
+                            <li><a href="reservation.html">Reservation</a></li>
+                            <li><a href="events.html">Events</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </nav>
+        </section>
+        <div class="checkout">
+            <div class="container">
+                <div class="image-side">
+                    <div>
+                            <h2>GCash Account</h2>
+                            <img src="img/Gcash.png" alt="GCash QR Code">
+                        </div>
+                </div>
+        
+                <div class="form-side">
+                    <h2>Checkout</h2>
+                    <form>
+                        <div class="form-group">
+                            <input type="text" placeholder="Full Name" name="Full_Name" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="email" placeholder="Email" name="Email" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" placeholder="Contact Number" name="Contact" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="date" name="Date" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="time" name="Time" required>
+                        </div>
+                        <div class="form-group">
+                            <br><label for="receipt">Upload Your Receipt:</label> <br>
+                            <input type="file" name="Receipt" id="receipt" accept="image/*" required>
+                        </div>
+                        <button type="submit" class="btn-1" name="Checkout">Complete Purchase</button>
+                    </form>
+                </div>
+            </div>
+        </div>        
+    </body>
+</html>
