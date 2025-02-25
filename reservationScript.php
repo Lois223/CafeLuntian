@@ -22,14 +22,13 @@ if(isset($_POST['Reservation']))
         $Time = mysqli_real_escape_string($connection, $_POST['Time']);
 	$Email = mysqli_real_escape_string($connection, $_POST['Email']);
 	$Pax = mysqli_real_escape_string($connection, $_POST['Pax']);
-
-	//insert data to table
-	$insert = "INSERT INTO tablereservation_tbl (Full_Name, Date, Time, Email, Pax, Reservation_Created, Status)
+	
+	$insert = "INSERT INTO tablereservation_tbl (Full_Name, Reservation_Date, Reservation_Time, Email, Pax, Reservation_Created, Status)
 		   VALUES('$Full_Name', '$Date', '$Time', '$Email', '$Pax', NOW(), 'confirmed')";  
 
 	try{
 		$insert_result = mysqli_query($connection, $insert);
-
+		
 		if($insert)
 		{
 			if(mysqli_affected_rows($connection) > 0)
@@ -37,10 +36,10 @@ if(isset($_POST['Reservation']))
 				print '<script>alert("Sucessfully Reserved!");</script>';
 				Print '<script>window.location.assign("menu.html");</script>';
 
-		}
-	catch (Exception $ex)
-	{
+			}
+		catch (Exception $ex)
+		{
 		echo 'Error Insert'.$ex -> getMessage();
+		}
 	}
-}
 ?>
