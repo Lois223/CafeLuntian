@@ -19,7 +19,6 @@ catch (Exception $ex)
 
 if(isset($_POST['Reservation']))
 {
-
 	$Full_Name = mysqli_real_escape_string($connection, $_POST['Full_Name']);
     	$Date = mysqli_real_escape_string($connection, $_POST['Date']);
     	$Time = mysqli_real_escape_string($connection, $_POST['Time']);
@@ -28,7 +27,7 @@ if(isset($_POST['Reservation']))
 
 	//insert data to table
 	$insert = "INSERT INTO tablereservation_tbl (Full_Name, Reservation_Date, Reservation_Time, Email, Pax, Reservation_Created, Status)
-			   VALUES('$Full_Name', '$Date', '$Time', '$Email', '$Pax', NOW(), 'confirmed')";  
+		   VALUES('$Full_Name', '$Date', '$Time', '$Email', '$Pax', NOW(), 'confirmed')";  
 
 try{
     $insert_result = mysqli_query($connection, $insert);
