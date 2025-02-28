@@ -29,12 +29,7 @@
                           <input type="text" name="User_LName" placeholder="Last Name" required>
                         </div>   
                         <div class="input-pair">  
-                            <input type="text" name="ContactNo" placeholder="Contact No." required>      
-                            <select name="Position" required>
-                                <option value="" disabled selected>Position/Role</option>
-                                <option value="Admin">Admin</option>
-                                <option value="Customer">Customer</option>
-                            </select>       
+                            <input type="text" name="ContactNo" placeholder="Contact No." required>        
                         </div>
                         <input type="email" name="Email" placeholder="Email" required>
                         <input type="password" name="Password" placeholder="Password" required>  

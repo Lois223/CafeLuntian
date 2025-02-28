@@ -64,23 +64,23 @@
         
                 <div class="form-side">
                     <h2>Book Your Table</h2>
-                    <form>
+                    <form method ="POST" action="reservationScript.php">
                         <div class="form-group">
-                            <input type="text" placeholder="Name" required>
+                            <input type="text" placeholder="Name" name = "Full_Name" required>
                         </div>
                         <div class="form-group">
-                            <input type="email" placeholder="Email" required>
+                            <input type="email" placeholder="Email" name = "Email" required>
                         </div>
                         <div class="form-group">
-                            <input type="date" required>
+                            <input type="date" name = "Date" required>
                         </div>
                         <div class="form-group">
-                            <input type="time" required>
+                            <input type="time" name = "Time" required>
                         </div>
                         <div class="form-group">
-                            <input type="number" placeholder="Number of Persons" required>
+                            <input type="number" placeholder="Number of Persons" name = "Pax" required>
                         </div>
-                        <button type="submit" class="btn-1">Reserve Now</button>
+                        <button type="submit" class="btn-1" name = "Reservation">Reserve Now</button>
                     </form>
                 </div>
             </div>
