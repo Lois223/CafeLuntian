@@ -13,6 +13,12 @@
     <link rel="stylesheet" href="style3.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
     <script src="https://kit.fontawesome.com/1e3d5daa34.js" crossorigin="anonymous"></script>
+    <style>
+       .table-wrapper {
+          overflow-x: auto; 
+          width: 100%;
+        }
+    </style>
   </head>
   <body>
     <aside class="sidebar">
@@ -77,6 +83,7 @@
                 include('mycon.php');
                 $sql = "SELECT * FROM table_reservation_tbl";
                 $result = $connection->query($sql);
+                echo '<div class="table-wrapper">';
                 echo "<table id='userTable' border='1' width='100%' id='userTable'>";
                 echo "<tr align='center' class=tblheader>
                         <td><b>Reservation_ID</b></td>
@@ -108,39 +115,15 @@
                             </tr>';
                     }
                 } else {
-                     echo "<tr><td colspan='6' align='center'>No results found.</td></tr>";
+                     echo "<tr><td colspan='9' align='center'>No results found.</td></tr>";
                   }
                 echo "</table>";
+                echo '</div>';
               ?>
             </div>
         </section>
     </main>
 
     <script src="main.js"></script>
-    <script>
-      //search bar input
-      const searchInput = document.getElementById("searchInput");
-      const patientTable = document.getElementById("userTable");
-      const tableRows = patientTable.getElementsByTagName("tr");
 
-      // Listen for input events 
-      searchInput.addEventListener("input", function () {
-        const searchTerm = searchInput.value.toLowerCase();
-
-        // Loop through all rows in the table 
-        for (let i = 1; i < tableRows.length; i++) {
-            const row = tableRows[i];
-            const userID = row.getElementsByClassName("user-id")[0].innerText.toLowerCase();
-            const userName = row.getElementsByClassName("user-name")[0].innerText.toLowerCase();
-            const userPosition = row.getElementsByClassName("user-position")[0].innerText.toLowerCase();
-
-            // Check if the search term is in the User ID, Name, Position
-            if (userID.includes(searchTerm) || userName.includes(searchTerm) || userPosition.includes(searchTerm)) {
-                row.style.display = ""; // Show row if it matches
-            } else {
-                row.style.display = "none"; // Hide row if it doesn't match
-            }
-        }
-      });
-    </script>
 </html>

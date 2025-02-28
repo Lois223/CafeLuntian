@@ -212,3 +212,113 @@
     min-width: 120px;
     color: #356D59;
   }
+
+/*style for tables*/
+table {
+  margin: 20px auto;
+  font-size: 17px;
+  border: solid #051D40 2px;
+  background-color: #FFF;
+  border-radius: 15px;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+table td {
+  padding: 3px 4px;
+  text-align: center;
+  border-bottom: 2px solid #051D40;
+  color: #356D59;
+}
+
+.tblheader {
+  color: #255141;
+}
+
+table tr:nth-of-type(even) {
+  background-color: #ffffff; 
+}
+
+table tr:nth-of-type(odd) {
+  background-color: #ecf6f8; 
+}
+
+
+.td-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.remove-row-button i {
+  color: #940a0a;
+  font-size: 1.5rem;
+  margin-top: 15px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+/* style for search*/
+.search {
+  margin-top: 6px;
+  padding: 12px 20px;
+  border-radius: 10px;
+  background-color: #356D59;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.search p {
+  color: #ffffff;
+  font-size: 20px;
+}
+
+.search input, .search select {
+  padding: 10px;
+  margin-left: 10px;
+}
+
+#searchInput {
+  width: 700px;
+  padding: 8px;
+  border-radius: 8px;
+  background: #ffffff;
+  font-size: 15px;
+  text-align: left;
+  padding-left: 20px;
+  border: 1px solid #7c7b7b;  
+}
+
+#searchIcon {
+  color: #ffffff;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.btn-2 {
+  font-size: 15px;
+  padding: 7px 10px;
+  border-color: #356D59;
+  border-radius: 3px;
+  cursor: pointer;
+  color: #046c86;
+  transition: all 0.3s ease 0s;
+  background-color: #ffffff;
+  text-decoration: none;
+}
+
+.btn-2:hover {
+  color: #ffffff;
+  background-color: #41a884;
+}
+
+.search-icon{
+  color: #ffffff;
+  font-size: 20px;
+  margin-right: 5px;
+}
+
