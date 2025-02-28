@@ -84,7 +84,7 @@
                 $sql = "SELECT * FROM table_reservation_tbl";
                 $result = $connection->query($sql);
                 echo '<div class="table-wrapper">';
-                echo "<table id='userTable' border='1' width='100%' id='userTable'>";
+                echo "<table id='userTable' border='1' width='100%'>";
                 echo "<tr align='center' class=tblheader>
                         <td><b>Reservation_ID</b></td>
                         <td><b>Full Name</b></td>
@@ -125,5 +125,30 @@
     </main>
 
     <script src="main.js"></script>
+    <script>
+      //search bar input
+      const searchInput = document.getElementById("searchInput");
+      const userTable = document.getElementById("userTable");
+      const tableRows = userTable.getElementsByTagName("tr");
+
+      // Listen for input events 
+      searchInput.addEventListener("input", function () {
+        const searchTerm = searchInput.value.toLowerCase();
+
+        // Loop through all rows in the table 
+        for (let i = 1; i < tableRows.length; i++) {
+            const row = tableRows[i];
+            const userId = row.getElementsByClassName("user-id")[0].innerText.toLowerCase();
+            const userName = row.getElementsByClassName("user-name")[0].innerText.toLowerCase();
+
+            // Check if the search term is in the User ID or User Name
+            if (userId.includes(searchTerm) || userName.includes(searchTerm)) {
+                row.style.display = ""; // Show row if it matches
+            } else {
+                row.style.display = "none"; // Hide row if it doesn't match
+            }
+        }
+      });
+    </script>
 
 </html>
