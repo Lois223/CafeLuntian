@@ -70,7 +70,7 @@ $subtotal = isset($_SESSION['subtotal']) ? $_SESSION['subtotal'] : 0; // Retriev
         <div class="checkout-container">
             <h2>Checkout Summary</h2>
             <div id="checkout-items"></div> 
-            <p><strong>Subtotal:</strong> 
+            <p class="subtotal"><strong>Subtotal:</strong> 
                 <span id="checkout-subtotal">₱0.00</span>
             </p>
         </div>
