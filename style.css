@@ -1452,7 +1452,7 @@ input[type=text] {
     flex-direction: column;
 }
 
-.checkout-details, .subtotal {
+.checkout-details, .subtotal, .empty-cart {
     color: #356D59;
 }
 
@@ -1460,6 +1460,7 @@ input[type=text] {
     margin-top: 1rem;
     font-size: 1.3rem;
 }
+
 
 
 
