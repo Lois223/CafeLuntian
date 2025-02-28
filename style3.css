@@ -21,18 +21,18 @@
     top: 0;
     left: 0;
     height: 100%;
-    width: 85px;
+    width: 5.3rem;
     display: flex;
     overflow-x: hidden;
     flex-direction: column;
     background: #356D59;
-    padding: 25px 20px;
+    padding: 1.5rem 1.25rem;
     transition: all 0.4s ease;
     z-index: 1000;
   }
   
   .sidebar:hover {
-    width: 260px;
+    width: 16.25rem;
   }
   
   .sidebar .sidebar-header {
@@ -41,7 +41,7 @@
   }
   
   .sidebar .sidebar-header img {
-    width: 42px;
+    width: 2.8rem;
   }
   
   .sidebar .sidebar-header h2 {
@@ -49,14 +49,14 @@
     font-size: 1.25rem;
     font-weight: 600;
     white-space: nowrap;
-    margin-left: 23px;
+    margin-left: 1.2rem;
   }
   
   .sidebar-links h4 {
     color: #fff;
     font-weight: 500;
     white-space: nowrap;
-    margin: 10px 0;
+    margin: .6rem 0;
     position: relative;
   }
   
@@ -88,7 +88,7 @@
   
   .sidebar-links {
     list-style: none;
-    margin-top: 20px;
+    margin-top: 1.25rem;
     height: 80%;
     overflow-y: auto;
     scrollbar-width: none;
@@ -105,7 +105,7 @@
     color: #fff;
     font-weight: 600;
     white-space: nowrap;
-    padding: 15px 10px;
+    padding: .9rem .6rem;
     text-decoration: none;
     transition: 0.2s ease;
   }
@@ -118,7 +118,7 @@
   
   .user-account {
     margin-top: auto;
-    padding: 12px 10px;
+    padding: .75rem .6rem;
     margin-left: -10px;
   }
   
@@ -129,7 +129,7 @@
   }
   
   .user-profile img {
-    width: 42px;
+    width: 2.6rem;
     border-radius: 50%;
     border: 2px solid #fff;
   }
@@ -146,7 +146,7 @@
   
   .user-detail {
     color: #356D59;
-    margin-left: 23px;
+    margin-left: 1.4rem;
     white-space: nowrap;
   }
   
@@ -156,18 +156,18 @@
   }
   
   .main {
-    margin-left: 85px;
-    padding: 20px;
+    margin-left: 5.3rem;
+    padding: 1.25rem;
     transition: margin-left 0.4s ease;
     overflow-x: hidden; 
   }
   
   .sidebar:hover ~ .main {
-    margin-left: 260px;
+    margin-left: 16.25rem;
   }
   
   .main header {
-    margin-bottom: 20px;
+    margin-bottom: 1.25rem;
   }
   
   .main h1 {

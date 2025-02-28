@@ -17,7 +17,7 @@
   <body>
     <aside class="sidebar">
       <div class="sidebar-header">
-        <img src="img/logo2.png" alt="logo" />
+        <img src="img/logo3.png" alt="logo" />
         <h2>Cafe Luntian</h2>
       </div>
 
