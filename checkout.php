@@ -13,69 +13,69 @@ $subtotal = isset($_SESSION['subtotal']) ? $_SESSION['subtotal'] : 0; // Retriev
     <title>Cafe Luntian</title>
     <link rel="icon" type="image/png" sizes="32x32" href="img/logo2.png">
     <link rel="stylesheet" href="style.css">
+    <script src="https://kit.fontawesome.com/1e3d5daa34.js" crossorigin="anonymous"></script>
 </head>
-<body>
-    <section class="nav">
+<body style="background-color: #f4f4f4;">
+    <section class="nav" id="checkout-nav">
         <a href="index.php"><img src="img/logo.png" class="logo"></a>
-        <nav class="navbar">
-            <ul>
-                <li><a href="index.php">Home</a></li>
-                <li><a href="about.php">About</a></li>
-                <li><a href="services.php">Services</a></li>
-                <li><a href="menu.php">Menu</a></li>
-                <li class="dropdown">
-                    <a href="" style="color: #41a884;">Pages</a>
-                    <ul class="dropdown-content">
-                        <li><a href="reservation.php">Reservation</a></li>
-                        <li><a href="events.php">Events</a></li>
-                    </ul>
-                </li>
-                <li><a href="contact.php">Contact</a></li>
-            </ul>
-        </nav>
+        <div class="cart-icon">
+            <a href="#" id="cart-icon">
+                <i class="fa-solid fa-bag-shopping"></i>               
+                <span id="cart-count">0</span>
+            </a>
+        </div>
     </section>
 
-    <div class="checkout">
-        <div class="container">
+    <section class="checkout">
+        <div class="form-side">
+            <h2>Checkout</h2>
             <div class="image-side">
-                <div>
-                    <h2>GCash Account</h2>
-                    <img src="img/Gcash.png" alt="GCash QR Code">
+                <div class="qr-container">
+                    <img src="img/gcash.png" alt="GCash QR Code">
+                    <div class="gcash-info">
+                        <h2>GCash Account</h2>
+                        <p class="gcash-number">09xx xxx xxx</p> 
+                    </div>
                 </div>
             </div>
 
-            <div class="form-side">
-                <h2>Checkout</h2>
-                <form>
-                    <div class="form-group">
-                        <input type="text" placeholder="Full Name" name="Full_Name" required>
-                    </div>
-                    <div class="form-group">
-                        <input type="email" placeholder="Email" name="Email" required>
-                    </div>
-                    <div class="form-group">
-                        <input type="text" placeholder="Contact Number" name="Contact" required>
-                    </div>
-                    <div class="form-group">
-                        <input type="date" name="Date" required>
-                    </div>
-                    <div class="form-group">
-                        <input type="time" name="Time" required>
-                    </div>
-                    <div class="form-group">
-                        <br><label for="receipt">Upload Your Receipt:</label> <br>
-                        <input type="file" name="Receipt" id="receipt" accept="image/*" required>
-                    </div>
-                    <button type="submit" class="btn-1" name="Checkout">Complete Purchase</button>
-                </form>
-
-                <div class="checkout-container">
-                    <h2>Checkout Summary</h2>
-                    <p><strong>Subtotal:</strong> <span id="checkout-subtotal">₱<?= isset($_SESSION['subtotal']) ? number_format($_SESSION['subtotal'], 2) : 0; ?></span></p>
+            <form>
+                <div class="form-group">
+                    <input type="text" placeholder="Full Name" name="Full_Name" required>
                 </div>
-            </div>
+                <div class="form-group">
+                    <input type="email" placeholder="Email" name="Email" required>
+                </div>
+                <div class="form-group">
+                    <input type="text" placeholder="Contact Number" name="Contact" required>
+                </div>
+                <div class="form-group">
+                    <label for="receipt">Date Ordered:</label> <br>
+                    <input type="date" name="Date" required>
+                </div>
+                <div class="form-group">
+                    <label for="receipt">Time:</label> <br>
+                    <input type="time" name="Time" required>
+                </div>
+                <div class="form-group">
+                    <label for="receipt">Upload Your Receipt:</label> <br>
+                    <input type="file" name="Receipt" id="receipt" accept="image/*" required>
+                </div>
+                <button type="submit" class="btn-1" name="Checkout">Complete Purchase</button>
+            </form>
         </div>
-    </div> 
+
+        <div class="separator"></div>
+
+        <div class="checkout-container">
+            <h2>Checkout Summary</h2>
+            <div id="checkout-items"></div> 
+            <p><strong>Subtotal:</strong> 
+                <span id="checkout-subtotal">₱0.00</span>
+            </p>
+        </div>
+    </section>
+
     <section class="footer-banner">
         <img src="img/banner.jpg">
         <div class="content">

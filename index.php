@@ -139,17 +139,17 @@
             <a href="menu.php" class="btn-1">See Full Menu <i class="fa-solid fa-arrow-right"></i></a>
         </section>
 
-        <div class="cart-sidebar" id="cartSidebar">
+        <div class="cart-sidebar" id="cartSidebar"> 
             <div class="cart-header">
-                <h2>Your Cart</h2>
+                <h2>Cart</h2>
                 <button id="closeCart">&times;</button>
             </div>
             <div class="cart-items" id="cartItems">
-                <p class="empty-cart-msg">Your cart is empty</p>
+                <p class="empty-cart-msg">Your cart is currently empty.</p>
             </div>
             <div class="cart-footer">
                 <p>Subtotal: <span id="cart-subtotal">₱0.00</span></p>
-                <button class="checkout-btn">Checkout</button>
+                <a href="checkout.php" id="checkout-btn" class="checkout-btn">Checkout</a>
             </div>
         </div>
 

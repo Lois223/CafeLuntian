@@ -1,4 +1,3 @@
-// cart and checkout
 document.addEventListener("DOMContentLoaded", () => {
     const cartSidebar = document.querySelector(".cart-sidebar");
     const cartItemsContainer = document.querySelector(".cart-items");
@@ -7,20 +6,21 @@ document.addEventListener("DOMContentLoaded", () => {
     const cartCount = document.getElementById("cart-count");
     const subtotalElement = document.getElementById("cart-subtotal");
     const checkoutBtn = document.getElementById("checkout-btn");
+    const checkoutItemsContainer = document.getElementById("checkout-items");
+    const checkoutSubtotal = document.getElementById("checkout-subtotal");
 
+    // retrieve cart data from localStorage / initialize an empty cart
     let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
-    // Function to Save Cart to Local Storage
+    // save cart data to localStorage
     const saveCart = () => {
-        if (cart.length === 0) {
-            localStorage.removeItem("cart"); // Clear storage if cart is empty
-        } else {
-            localStorage.setItem("cart", JSON.stringify(cart));
-        }
+        cart.length === 0 ? localStorage.removeItem("cart") : localStorage.setItem("cart", JSON.stringify(cart));
     };
 
-    // Function to Update Cart Display
+    // displaying cart sidebar content 
     const updateCartDisplay = () => {
+        if (!cartItemsContainer) return;
+
         if (cart.length === 0) {
             cartItemsContainer.innerHTML = `<div class="empty-cart"><h2>Your cart is empty</h2></div>`;
             cartCount.textContent = "0";
@@ -56,10 +56,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
         cartCount.textContent = cart.reduce((total, item) => total + item.quantity, 0);
         subtotalElement.textContent = `₱${subtotal.toFixed(2)}`;
-        saveCart(); // Save cart after update
+        saveCart(); // save cart after update
     };
 
-    // Add Item to Cart
+     // adding item to cart
     document.querySelectorAll(".add-btn").forEach(button => {
         button.addEventListener("click", () => {
             const menuItem = button.closest(".menu-item");
@@ -80,89 +80,87 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 
-    // Cart Button Actions (Increase, Decrease, Remove)
-    cartItemsContainer.addEventListener("click", (e) => {
-        const index = e.target.closest("button")?.dataset.index;
-        if (index === undefined) return;
+    // cart btns action (increase, decrease, remove)
+    if (cartItemsContainer) {
+        cartItemsContainer.addEventListener("click", (e) => {
+            const index = e.target.closest("button")?.dataset.index;
+            if (index === undefined) return;
 
-        if (e.target.closest(".increase")) {
-            cart[index].quantity++;
-        } else if (e.target.closest(".decrease")) {
-            if (cart[index].quantity > 1) {
-                cart[index].quantity--;
-            } else {
-                cart.splice(index, 1); // 🔥 Remove item from cart properly
+            if (e.target.closest(".increase")) {
+                cart[index].quantity++;
+            } else if (e.target.closest(".decrease")) {
+                if (cart[index].quantity > 1) {
+                    cart[index].quantity--;
+                } else {
+                    cart.splice(index, 1);
+                }
+            } else if (e.target.closest(".remove-btn")) {
+                cart.splice(index, 1);
             }
-        } else if (e.target.closest(".remove-btn")) {
-            cart.splice(index, 1); // 🔥 Ensure item is fully removed
-        }
 
-        updateCartDisplay();
-    });
+            updateCartDisplay();
+        });
+    }
 
-    // Toggle Cart Sidebar
-    cartIcon.addEventListener("click", (e) => {
-        e.preventDefault();
-        cartSidebar.classList.toggle("active");
-        updateCartDisplay();
-    });
+    // toggle cart sidebar visibility
+    if (cartIcon) {
+        cartIcon.addEventListener("click", (e) => {
+            e.preventDefault();
+            cartSidebar.classList.toggle("active");
+            updateCartDisplay();
+        });
+    }
 
-    // Close Cart Sidebar
-    closeCartBtn.addEventListener("click", () => cartSidebar.classList.remove("active"));
+    // close cart sidebar 
+    if (closeCartBtn) {
+        closeCartBtn.addEventListener("click", () => cartSidebar.classList.remove("active"));
+    }
 
-    // Checkout Button
+    // redirect to checkout page
     if (checkoutBtn) {
         checkoutBtn.addEventListener("click", () => {
-            localStorage.setItem("cart", JSON.stringify(cart)); // Save cart before checkout
+            localStorage.setItem("cart", JSON.stringify(cart));
             window.location.href = "checkout.php";
         });
     }
 
-    // Checkout Page Logic
-    const checkoutItemsContainer = document.querySelector(".checkout-items");
-    const checkoutSubtotal = document.getElementById("checkout-subtotal");
-
+    // display cart items on checkout page
     const displayCheckoutItems = () => {
         if (!checkoutItemsContainer || !checkoutSubtotal) return;
-    
-        // Retrieve the saved cart from localStorage
+
         let checkoutCart = JSON.parse(localStorage.getItem("cart")) || [];
-    
+
         if (checkoutCart.length === 0) {
-            checkoutItemsContainer.innerHTML = `<div class="empty-cart"><h2>Your cart is empty</h2></div>`;
+            checkoutItemsContainer.innerHTML = `<div class="empty-cart"><h3>Your cart is empty</h3></div>`;
             checkoutSubtotal.textContent = "₱0.00";
             return;
         }
-    
+
         let subtotal = 0;
         checkoutItemsContainer.innerHTML = checkoutCart.map(item => {
             let itemTotal = item.price * item.quantity;
             subtotal += itemTotal;
-    
+
             return `
             <div class="checkout-item">
                 <img src="${item.image}" alt="${item.name}" width="50">
-                <p>${item.name} (${item.type})</p>
-                <p>Quantity: ${item.quantity}</p>
-                <p class="total">₱${itemTotal.toFixed(2)}</p>
+                <div class="checkout-details">
+                    <p><strong>${item.name}</strong> (${item.type})</p>
+                    <p>Quantity: ${item.quantity}</p>
+                    <p class="total">₱${itemTotal.toFixed(2)}</p>
+                </div>
             </div>`;
         }).join("");
-    
-        // Ensure subtotal matches cart sidebar subtotal
-        localStorage.setItem("subtotal", subtotal.toFixed(2));  // Save subtotal to localStorage
+
+        localStorage.setItem("subtotal", subtotal.toFixed(2));
         checkoutSubtotal.textContent = `₱${subtotal.toFixed(2)}`;
     };
-    
-    // Ensure the subtotal updates on page load
-    document.addEventListener("DOMContentLoaded", () => {
+
+    // if on checkout page, display items
+    if (checkoutItemsContainer) {
         displayCheckoutItems();
-    });
-    
+    }
 
-    // Display Checkout Items on Checkout Page
-    displayCheckoutItems();
-
-    // 🔥 Ensure Cart Updates on Page Load
+    // cart updates on page load
     updateCartDisplay();
-
 });
