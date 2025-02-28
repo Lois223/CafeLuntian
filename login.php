@@ -14,7 +14,7 @@
             <div class="main">
                 <div class="content">
                     <h2>Log In</h2>
-                    <form method="POST" action="IndexScript.php">
+                    <form method="POST" action="loginScript.php">
                         <input type="text" name="Email" placeholder="Email">
                         <input type="password" name="Password" placeholder="Password">
                           <input type="submit" id="login-btn" name="log_user" value="Login"/>

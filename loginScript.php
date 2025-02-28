@@ -6,7 +6,7 @@ if (isset($_POST['log_user'])) {
     $Email = mysqli_real_escape_string($connection, $_POST['Email']);
     $Password = mysqli_real_escape_string($connection, $_POST['Password']);
 
-        $query1 = mysqli_query($connection, "SELECT * FROM user_tbl WHERE Email = '$Email'");
+        $query1 = mysqli_query($connection, "SELECT * FROM admin_tbl WHERE Email = '$Email'");
         $existing = mysqli_num_rows($query1);
 
         if ($existing > 0) {
@@ -15,19 +15,13 @@ if (isset($_POST['log_user'])) {
 
             if ($Password == $table_password) {
                 // Set session variables
-                $_SESSION['User_ID'] = $row['User_ID'];
+                $_SESSION['Admin_ID'] = $row['Admin_ID'];
                 $_SESSION['User_FName'] = $row['User_FName'];
                 $_SESSION['User_LName'] = $row['User_LName'];
                 $_SESSION['Contact_Num'] = $row['Contact_Num'];
-                $_SESSION['Position'] = $row['Position'];
                 $_SESSION['Email'] = $Email;
-
-                // Redirect based on position
-                if (strtolower($row['Position']) == 'admin') {
-                    echo '<script>window.location.assign("register.php");</script>';
-                } else {
-                    echo '<script>window.location.assign("index.html");</script>';
-                }
+                echo '<script>window.location.assign("index.php");</script>';
+                } 
                 exit;
             } else {
                 echo '<script>alert("Incorrect Password! Please try again.");</script>';
@@ -39,5 +33,4 @@ if (isset($_POST['log_user'])) {
             echo '<script>window.location.assign("login.php");</script>';
             exit;
         }
-    }
 ?>
