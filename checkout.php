@@ -76,6 +76,20 @@ $subtotal = isset($_SESSION['subtotal']) ? $_SESSION['subtotal'] : 0; // Retriev
         </div>
     </section>
 
+    <div class="cart-sidebar" id="cartSidebar"> 
+        <div class="cart-header">
+            <h2>Cart</h2>
+            <button id="closeCart">&times;</button>
+        </div>
+        <div class="cart-items" id="cartItems">
+            <p class="empty-cart-msg">Your cart is currently empty.</p>
+        </div>
+        <div class="cart-footer">
+            <p>Subtotal: <span id="cart-subtotal">₱0.00</span></p>
+            <a href="checkout.php" id="checkout-btn" class="checkout-btn">Checkout</a>
+        </div>
+    </div>
+
     <section class="footer-banner">
         <img src="img/banner.jpg">
         <div class="content">
