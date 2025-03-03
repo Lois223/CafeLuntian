@@ -233,17 +233,24 @@ section {
     margin-top: 1rem;
 }
 
-/*style for cart*/
+/*style for cart-item*/
 .cart-item {
     display: flex;
+    flex-direction: column;
     align-items: center;
-    justify-content: space-around;
     border-bottom: 0.1rem solid #ddd;
-    padding: 1vh 1vw; 
+    padding: 1vh 1vw;
+    text-align: center;
+}
+
+.cart-item .cart-main {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
 }
 
 .cart-item img {
-    display: block;
     width: 3vw;
     height: 9vh;
 }
@@ -253,14 +260,14 @@ section {
     font-size: 1rem;
     color: #356D59;
     font-weight: 500;
+    text-align: left;
 }
 
 .cart-controls {
     display: flex;
-    align-items: center; 
-    justify-content: center;
+    align-items: center;
     gap: 1vw;
-    min-width: 12vw; 
+    min-width: 12vw;
 }
 
 .qty-btn, .remove-btn {
@@ -281,6 +288,27 @@ section {
     font-size: 1rem;
 }
 
+.add-ons {
+    display: flex;
+    align-items: center;
+    gap: .6rem;
+    margin-left: -2rem;
+    width: 100%;
+    justify-content: flex-start;
+    margin-top: 1rem;
+}
+
+.add-ons label{
+    color: #356D59;
+}
+
+.addon-title {
+    font-weight: 700 !important; 
+    font-size: 1rem; 
+    margin-right: 0.5rem;
+    color: #356D59;
+    display: inline-block; 
+}
 
 
 /*style for intro section*/
@@ -963,10 +991,23 @@ input[type=text] {
     text-align: left;
 }
 
-.add h3{
+.add {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%; 
+    gap: 1rem; 
+    justify-content: flex-start; 
+    align-items: center; 
+}
+
+.add h3 {
     background-color: #356D59;
     color: #fff;
     text-align: center;
+    padding: 0.5rem 1rem;
+    border-radius: 5px; 
+    white-space: nowrap; 
+    flex: 1 1 auto; 
 }
 
 .menu-page span{
@@ -1460,7 +1501,6 @@ input[type=text] {
     margin-top: 1rem;
     font-size: 1.3rem;
 }
-
 
 
 

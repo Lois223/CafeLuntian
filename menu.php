@@ -72,7 +72,7 @@
                             <h3>Salted Caramel</h3>
                         </div>
                         <button class="add-btn">+</button>
-                    </li>
+                    </li>   
                     <li class="menu-item" data-name="Cappuccino" data-type="Hotdrinks Coffee" data-price="₱99.0" data-image="img/cappuccino.png">
                         <img src="img/cappuccino.png" alt="Cappuccino">
                         <div class="info">
@@ -339,6 +339,7 @@
 
             <div class="add">
                 <h3>ADD <span>10+</span> FOR COFFEE SHOT</h3>
+                <h3>ADD <span>50+</span> FOR ALCOHOL SHOT</h3>
             </div>
         </section>
 
@@ -416,19 +417,20 @@
         
                 subtotal += price;
 
-        // Update the subtotal in the session
-            fetch('update_subtotal.php', {
-                method: 'POST',
-                headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ subtotal: subtotal })
-        });
+                // Update the subtotal in the session
+                    fetch('update_subtotal.php', {
+                        method: 'POST',
+                        headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ subtotal: subtotal })
+                });
 
-        // Update the displayed subtotal in the cart
-            document.getElementById('cart-subtotal').innerText = '₱' + subtotal.toFixed(2);
-        });
-    });
+                // Update the displayed subtotal in the cart
+                    document.getElementById('cart-subtotal').innerText = '₱' + subtotal.toFixed(2);
+                });
+            });
+
             //scroll btns for menu items
             document.querySelectorAll('.menu-container').forEach(container => {
                 const leftBtn = container.querySelector('.left-btn');
@@ -478,8 +480,6 @@
                 });
             });
 
-           
-            
         </script> 
 
         <script src="main.js"></script> 
