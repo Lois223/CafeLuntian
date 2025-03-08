@@ -13,13 +13,22 @@
         <link rel="stylesheet" href="style.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
         <script src="https://kit.fontawesome.com/1e3d5daa34.js" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Birthstone&display=swap" rel="stylesheet">
     </head>
     <body>
+
         <section class="nav">
-            <a href="index.php"><img src="img/logo.png" class="logo"></a>
+            <div class="menu-toggle" id="menu-toggle">
+                <i class="fa-solid fa-bars"></i>
+            </div>
+            
+            <a href="index.php">
+                <img src="img/logo.png" class="logo">
+            </a>
+            
             <nav class="navbar">
                 <ul>
                     <li><a href="index.php" style="color: #41a884;">Home</a></li>
@@ -34,17 +43,31 @@
                         </ul>
                     </li>
                     <li><a href="contact.php">Contact</a></li>
-                    <li class="cart-icon">
-                        <a href="#" id="cart-icon">
-                            <i class="fa-solid fa-bag-shopping"></i>               
-                            <span id="cart-count">0</span>
-                        </a>
-                    </li>
                 </ul>
             </nav>
+
+            <div class="cart-icon">
+                <a href="#" id="cart-icon">
+                    <i class="fa-solid fa-bag-shopping"></i>
+                    <span id="cart-count">0</span>
+                </a>
+            </div>
         </section>
 
-        
+        <!-- Sidebar Menu for Mobile -->
+        <aside class="sidebar" id="sidebar">
+            <div class="close-btn" id="close-sidebar">&times;</div>
+            <ul>
+                <li><a href="index.php">Home</a></li>
+                <li><a href="about.php">About</a></li>
+                <li><a href="services.php">Services</a></li>
+                <li><a href="menu.php">Menu</a></li>
+                <li><a href="reservation.php">Reservation</a></li>
+                <li><a href="events.php">Events</a></li>
+                <li><a href="contact.php">Contact</a></li>
+            </ul>
+        </aside>
+
         <section class="intro" id="home">
             <div class="carousel">
                 <img src="img/home-bg.jpeg" class="carousel-image active">
@@ -54,7 +77,7 @@
             <div class="info">
                 <h1>Freshly Brewed, Just for You!</h1>
                 <h3>Order your favorite coffee and treats now!</h3>
-                <a href="" class="btn-1">Order Now</a>    
+                <a href="menu.php" class="btn-1">Order Now</a>    
             </div>       
         </section>
         
@@ -71,7 +94,6 @@
                         prefer something cool and creamy, we’ve got the perfect drink for you. Live your best coffee life with us! </p>
                     <a href="about.php"><button class="btn-1">Learn More</button></a>
                 </div>
-
             </div>
         </section>
 
@@ -90,10 +112,10 @@
                 </div>
             </a> 
             
-            <a href="">
+            <a href="menu.php">
                 <div class="box">
                     <div class="image">
-                        <img src="img/order.png">
+                        <img src="img/tablersvt.jpg">
                     </div>
                     <div class="info">
                         <h2>Online Ordering</h2>
@@ -180,7 +202,6 @@
                     <p><i class="fas fa-envelope"></i>fo.haciendadarasa@gmail.com</p> 
                 </div>
 
-                
                 <div class="box">
                     <h3>FOLLOW US</h3>
                     <p>Stay updated with our latest brews and offers!</p>
@@ -217,6 +238,7 @@
         
                 setInterval(changeImage, 3000); // Change image every 3 secs
             });
+  
         </script>
     </body>
 </html>

@@ -19,7 +19,14 @@
     </head>
     <body id="about-page">
         <section class="nav">
-            <a href="index.php"><img src="img/logo.png" class="logo"></a>
+            <div class="menu-toggle" id="menu-toggle">
+                <i class="fa-solid fa-bars"></i>
+            </div>
+            
+            <a href="index.php">
+                <img src="img/logo.png" class="logo">
+            </a>
+            
             <nav class="navbar">
                 <ul>
                     <li><a href="index.php">Home</a></li>
@@ -34,15 +41,30 @@
                         </ul>
                     </li>
                     <li><a href="contact.php">Contact</a></li>
-                    <li class="cart-icon">
-                        <a href="#" id="cart-icon">
-                            <i class="fa-solid fa-bag-shopping"></i>               
-                            <span id="cart-count">0</span>
-                        </a>
-                    </li>
                 </ul>
             </nav>
+
+            <div class="cart-icon">
+                <a href="#" id="cart-icon">
+                    <i class="fa-solid fa-bag-shopping"></i>
+                    <span id="cart-count">0</span>
+                </a>
+            </div>
         </section>
+
+        <!-- Sidebar Menu for Mobile -->
+        <aside class="sidebar" id="sidebar">
+            <div class="close-btn" id="close-sidebar">&times;</div>
+            <ul>
+                <li><a href="index.php">Home</a></li>
+                <li><a href="about.php">About</a></li>
+                <li><a href="services.php">Services</a></li>
+                <li><a href="menu.php">Menu</a></li>
+                <li><a href="reservation.php">Reservation</a></li>
+                <li><a href="events.php">Events</a></li>
+                <li><a href="contact.php">Contact</a></li>
+            </ul>
+        </aside>
 
         <section class="intro-banner">
             <div class="banner">
@@ -63,25 +85,28 @@
                 </div>
         
                 <div class="form-side">
-                    <h2>Book Your Table</h2>
-                    <form method ="POST" action="reservationScript.php">
+                    <h2>Reserve Your Table</h2>
+                    <form method="POST" action="reservationScript.php">
                         <div class="form-group">
-                            <input type="text" placeholder="Name" name = "Full_Name" required>
+                            <input type="text" placeholder="Name" name="Full_Name" required>
                         </div>
                         <div class="form-group">
-                            <input type="email" placeholder="Email" name = "Email" required>
+                            <input type="email" placeholder="Email" name="Email" required>
                         </div>
                         <div class="form-group">
-                            <input type="date" name = "Date" required>
+                            <label for="book-date">Reservation Date:</label>
+                            <input type="date" id="book-date" name="Date" required>
                         </div>
                         <div class="form-group">
-                            <input type="time" name = "Time" required>
+                            <label for="book-time">Reservation Time:</label>
+                            <input type="time" id="book-time" name="Time" required>
                         </div>
                         <div class="form-group">
-                            <input type="number" placeholder="Number of Persons" name = "Pax" required>
+                            <input type="number" placeholder="Number of Persons" name="Pax" required>
                         </div>
-                        <button type="submit" class="btn-1" name = "Reservation">Reserve Now</button>
+                        <button type="submit" class="btn-1" name="Reservation">Reserve Now</button>
                     </form>
+
                 </div>
             </div>
         </section>

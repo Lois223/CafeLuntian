@@ -19,10 +19,17 @@
     </head>
     <body>
         <section class="nav">
-            <a href="index.php"><img src="img/logo.png" class="logo"></a>
+            <div class="menu-toggle" id="menu-toggle">
+                <i class="fa-solid fa-bars"></i>
+            </div>
+            
+            <a href="index.php">
+                <img src="img/logo.png" class="logo">
+            </a>
+            
             <nav class="navbar">
                 <ul>
-                    <li><a href="index.php">Home</a></li>
+                <li><a href="index.php">Home</a></li>
                     <li><a href="about.php">About</a></li>
                     <li><a href="services.php">Services</a></li>
                     <li><a href="menu.php" style="color: #41a884;">Menu</a></li>
@@ -34,15 +41,30 @@
                         </ul>
                     </li>
                     <li><a href="contact.php">Contact</a></li>
-                    <li class="cart-icon">
-                        <a href="#" id="cart-icon">
-                            <i class="fa-solid fa-bag-shopping"></i>               
-                            <span id="cart-count">0</span>
-                        </a>
-                    </li>
                 </ul>
             </nav>
+
+            <div class="cart-icon">
+                <a href="#" id="cart-icon">
+                    <i class="fa-solid fa-bag-shopping"></i>
+                    <span id="cart-count">0</span>
+                </a>
+            </div>
         </section>
+
+        <!-- Sidebar Menu for Mobile -->
+        <aside class="sidebar" id="sidebar">
+            <div class="close-btn" id="close-sidebar">&times;</div>
+            <ul>
+                <li><a href="index.php">Home</a></li>
+                <li><a href="about.php">About</a></li>
+                <li><a href="services.php">Services</a></li>
+                <li><a href="menu.php">Menu</a></li>
+                <li><a href="reservation.php">Reservation</a></li>
+                <li><a href="events.php">Events</a></li>
+                <li><a href="contact.php">Contact</a></li>
+            </ul>
+        </aside>
 
         <section class="intro-banner">
             <div class="banner">

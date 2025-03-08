@@ -41,7 +41,9 @@ include('mycon.php');
                 </div>
             </div>
 
-            <form method ="POST" action="checkoutScript.php">
+            <div id="successMessage" class="success-message">✔ Checkout Successful!</div>
+
+            <form id="checkoutForm" method="POST" action="checkoutScript.php">
                 <div class="form-group">
                     <input type="text" placeholder="Customer Name" name="Customer_Name" required>
                 </div>
@@ -60,14 +62,25 @@ include('mycon.php');
                     <input type="time" name="Time" required>
                 </div>
                 <div class="form-group">
-                            <input type="number" placeholder="Number of Guests" name = "Pax" required>
-                        </div>
+                    <input type="number" placeholder="Number of Guests" name="Pax" required>
+                </div>
                 <div class="form-group">
                     <label for="receipt">Upload Your Receipt:</label> <br>
                     <input type="file" name="Receipt" id="receipt" accept="image/*" required>
                 </div>
-                <button type="submit" class="btn-1" name="Checkout">Complete Purchase</button>
+                <button type="button" class="btn-1" id="checkoutBtn">Complete Purchase</button>
             </form>
+
+            <div id="confirmationModal" class="modal">
+                <div class="modal-content">
+                    <h3>Non-Refundable Policy</h3>
+                    <p>Please note that this purchase is **non-refundable**. Do you agree to proceed?</p>
+                    <div class="modal-buttons">
+                        <button class="btn-cancel" id="cancelCheckout">Cancel</button>
+                        <button class="btn-agree" id="confirmCheckout">Agree & Proceed</button>      
+                    </div>
+                </div>
+            </div>
         </div>
 
         <div class="separator"></div>
@@ -143,6 +156,38 @@ include('mycon.php');
     </section>
 
     <script src="main.js"></script> 
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+            const checkoutBtn = document.getElementById("checkoutBtn");
+            const confirmationModal = document.getElementById("confirmationModal");
+            const cancelCheckout = document.getElementById("cancelCheckout");
+            const confirmCheckout = document.getElementById("confirmCheckout");
+            const checkoutForm = document.getElementById("checkoutForm");
+            const successMessage = document.getElementById("successMessage");
 
+            // show the modal 
+            checkoutBtn.addEventListener("click", function () {
+                confirmationModal.classList.add("show");
+            });
+
+            // hide the modal 
+            cancelCheckout.addEventListener("click", function () {
+                confirmationModal.classList.remove("show");
+            });
+
+            // proceed with checkout
+            confirmCheckout.addEventListener("click", function () {
+                confirmationModal.classList.remove("show"); // hide modal
+                successMessage.style.display = "block"; // show success message
+
+                setTimeout(() => {
+                    successMessage.style.display = "none"; // hide success msg
+                    checkoutForm.submit(); // submit the form
+                }, 3000);
+            });
+
+        });
+
+    </script>
 </body>
 </html>
