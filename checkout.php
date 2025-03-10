@@ -16,6 +16,22 @@ include('mycon.php');
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Birthstone&display=swap" rel="stylesheet">
+        <style>
+
+        select {
+            width: 100%;
+            padding: 15px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        select:focus {
+            border-color: #356D59;
+            outline: none;
+        }
+        </style>
 </head>
 <body style="background-color: #f4f4f4;">
     <section class="nav" id="checkout-nav">
@@ -41,46 +57,41 @@ include('mycon.php');
                 </div>
             </div>
 
-            <div id="successMessage" class="success-message">✔ Checkout Successful!</div>
-
-            <form id="checkoutForm" method="POST" action="checkoutScript.php">
+            <form method ="POST" action="checkoutScript.php" enctype="multipart/form-data">
+            <input type="hidden" name="cartData" id="cartData">
                 <div class="form-group">
-                    <input type="text" placeholder="Customer Name" name="Customer_Name" required>
+                    <label for="name">Full Name (Preferably Registered Name in GCash):</label> <br>
+                    <input type="text" name="Customer_Name" required>
                 </div>
                 <div class="form-group">
-                    <input type="email" placeholder="Email" name="Email" required>
+                    <label for="contact">Contact Number (Registered Number in GCash):</label> <br>
+                    <input type="text" placeholder="09xx xxx xxx" name="Contact" required>
                 </div>
                 <div class="form-group">
-                    <input type="text" placeholder="Contact Number" name="Contact" required>
+                    <label for="email">Email Address:</label> <br>
+                    <input type="email" placeholder="youremail@gmail.com" name="Email" required>
                 </div>
                 <div class="form-group">
-                    <label for="receipt">Date Ordered:</label> <br>
-                    <input type="date" name="Date" required>
+                    <label for="room">Room Number:</label> <br>
+                    <input type="text" name="Room_Num" required>
+                </div>
+                <div class="form-group">
+                    <label for="orderType">Select Mode of Service:</label>
+                    <select id="orderType" name="orderType">
+                    <option value="Delivery" selected>Delivery</option>
+                    <option value="Pickup">Pickup</option>
+                    </select>
                 </div>
                 <div class="form-group">
                     <label for="receipt">Time:</label> <br>
                     <input type="time" name="Time" required>
                 </div>
                 <div class="form-group">
-                    <input type="number" placeholder="Number of Guests" name="Pax" required>
-                </div>
-                <div class="form-group">
                     <label for="receipt">Upload Your Receipt:</label> <br>
                     <input type="file" name="Receipt" id="receipt" accept="image/*" required>
                 </div>
-                <button type="button" class="btn-1" id="checkoutBtn">Complete Purchase</button>
+                <button type="submit" class="btn-1" name="Checkout">Complete Purchase</button>
             </form>
-
-            <div id="confirmationModal" class="modal">
-                <div class="modal-content">
-                    <h3>Non-Refundable Policy</h3>
-                    <p>Please note that this purchase is **non-refundable**. Do you agree to proceed?</p>
-                    <div class="modal-buttons">
-                        <button class="btn-cancel" id="cancelCheckout">Cancel</button>
-                        <button class="btn-agree" id="confirmCheckout">Agree & Proceed</button>      
-                    </div>
-                </div>
-            </div>
         </div>
 
         <div class="separator"></div>
@@ -156,38 +167,6 @@ include('mycon.php');
     </section>
 
     <script src="main.js"></script> 
-    <script>
-      document.addEventListener("DOMContentLoaded", function () {
-            const checkoutBtn = document.getElementById("checkoutBtn");
-            const confirmationModal = document.getElementById("confirmationModal");
-            const cancelCheckout = document.getElementById("cancelCheckout");
-            const confirmCheckout = document.getElementById("confirmCheckout");
-            const checkoutForm = document.getElementById("checkoutForm");
-            const successMessage = document.getElementById("successMessage");
 
-            // show the modal 
-            checkoutBtn.addEventListener("click", function () {
-                confirmationModal.classList.add("show");
-            });
-
-            // hide the modal 
-            cancelCheckout.addEventListener("click", function () {
-                confirmationModal.classList.remove("show");
-            });
-
-            // proceed with checkout
-            confirmCheckout.addEventListener("click", function () {
-                confirmationModal.classList.remove("show"); // hide modal
-                successMessage.style.display = "block"; // show success message
-
-                setTimeout(() => {
-                    successMessage.style.display = "none"; // hide success msg
-                    checkoutForm.submit(); // submit the form
-                }, 3000);
-            });
-
-        });
-
-    </script>
 </body>
 </html>
