@@ -35,9 +35,9 @@ section {
 }
 
 .nav .logo {
-    margin-top: 2rem;
-    height: 310px;
-    width: 260px;
+    margin-top: 1rem;
+    height: 70px;
+    width: 290px;
 }
 
 .navbar ul {
@@ -1672,8 +1672,22 @@ input[type="text"] {
     }
 }
 
+/* style for vid-index */
+.vid{
+    margin-top: clamp(5vh, 3vw, 5vh);
+}
+.vid .vid-container{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
 
+.vid .vid-container video{
+    height: auto;
+    width: 70vw;
+}
 
+/* style for hacienda */
 
 
 
@@ -1752,8 +1766,9 @@ input[type="text"] {
     }
 
     .nav .logo {
-        height: 35vh; 
-        width: 45vw;
+        height: 10vh; 
+        width: 30vw;
+        min-width: 25vw;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -2206,9 +2221,23 @@ input[type="text"] {
     .checkout .qr-container {
         flex-direction: row;
     }
+
+    .checkout h2{
+        margin-top: 2rem;
+        text-align: center;
+    }
+
+    html::-webkit-scrollbar, body::-webkit-scrollbar {
+        display: none !important;
+    } 
 }
 
 @media (max-width: 480px) {
+    .nav .logo {
+        height: 6vh; 
+        width: 40vw;
+    }
+
     /* checkout-nav */
     #checkout-nav {
         padding: 1rem; 
