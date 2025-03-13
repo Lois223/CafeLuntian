@@ -144,24 +144,28 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
      // display cart items on checkout page
-    const displayCheckoutItems = () => {
-        if (!checkoutItemsContainer || !checkoutSubtotal) return;
+const displayCheckoutItems = () => {
+    if (!checkoutItemsContainer || !checkoutSubtotal) return;
 
-        let checkoutCart = JSON.parse(localStorage.getItem("cart")) || [];
+    let checkoutCart = JSON.parse(localStorage.getItem("cart")) || [];
 
-        if (checkoutCart.length === 0) {
-            checkoutItemsContainer.innerHTML = `<div class="empty-cart"><h3>Your cart is empty</h3></div>`;
-            checkoutSubtotal.textContent = "₱0.00";
-            return;
-        }
+    if (checkoutCart.length === 0) {
+        checkoutItemsContainer.innerHTML = `<div class="empty-cart"><h3>Your cart is empty</h3></div>`;
+        checkoutSubtotal.textContent = "₱0.00";
+        return;
+    }
 
-        let subtotal = 0;
-        checkoutItemsContainer.innerHTML = checkoutCart.map(item => {
-            let addonPrice = item.addons === "coffee" ? 10 : item.addons === "alcohol" ? 50 : 0;
-            let itemTotal = (item.price + addonPrice) * item.quantity;
-            subtotal += itemTotal;
+    let subtotal = 0;
+    let orderName = checkoutCart.map(item => item.name).join(", ");
+    let quantity = 0;
 
-            return `
+    checkoutItemsContainer.innerHTML = checkoutCart.map(item => {
+        let addonPrice = item.addons === "coffee" ? 10 : item.addons === "alcohol" ? 50 : 0;
+        let itemTotal = (item.price + addonPrice) * item.quantity;
+        subtotal += itemTotal;
+        quantity += item.quantity;
+
+        return `
             <div class="checkout-item">
                 <img src="${item.image}" alt="${item.name}" width="50">
                 <div class="checkout-details">
@@ -171,18 +175,21 @@ document.addEventListener("DOMContentLoaded", () => {
                     <p class="total">₱${itemTotal.toFixed(2)}</p>
                 </div>
             </div>`;
-        }).join("");
+    }).join("");
 
-        localStorage.setItem("subtotal", subtotal.toFixed(2));
-        checkoutSubtotal.textContent = `₱${subtotal.toFixed(2)}`;
-    };
+    // Update the checkout form hidden fields
+    document.getElementById("Order_Name").value = orderName; // Populate with product names
+    document.getElementById("Price").value = subtotal.toFixed(2); // Populate with total price
+    document.getElementById("Quantity").value = quantity; // Populate with total quantity
 
-     // if on checkout page, display items
-    if (checkoutItemsContainer) {
-        displayCheckoutItems();
-    }
+    localStorage.setItem("subtotal", subtotal.toFixed(2));
+    checkoutSubtotal.textContent = `₱${subtotal.toFixed(2)}`;
+};
 
-    // cart updates on page load
-    updateCartDisplay();
+// if on checkout page, display items
+if (checkoutItemsContainer) {
+    displayCheckoutItems();
+}
+
 });
 
