@@ -1,3 +1,37 @@
+// sidebar (mobile)
+document.addEventListener("DOMContentLoaded", function () {
+    const menuToggle = document.getElementById("menu-toggle");
+    const sidebar = document.getElementById("sidebar");
+    const closeSidebar = document.getElementById("close-sidebar");
+
+    // show the sidebar
+    function openSidebar() {
+        sidebar.style.left = "0";
+    }
+
+    // hide the sidebar
+    function closeSidebarFn() {
+        sidebar.style.left = "-100vw";
+    }
+
+    menuToggle.addEventListener("click", function () {
+        openSidebar();
+    });
+
+    closeSidebar.addEventListener("click", function () {
+        closeSidebarFn();
+    });
+
+    // close sidebar when clicking outside of it
+    document.addEventListener("click", function (event) {
+        if (!sidebar.contains(event.target) && !event.target.closest("#menu-toggle")) {
+            closeSidebarFn();
+        }
+    });
+});
+
+
+// cart sidebar
 document.addEventListener("DOMContentLoaded", () => {
     const cartSidebar = document.querySelector(".cart-sidebar");
     const cartItemsContainer = document.querySelector(".cart-items");
@@ -177,19 +211,24 @@ const displayCheckoutItems = () => {
             </div>`;
     }).join("");
 
+    
+    localStorage.setItem("subtotal", subtotal.toFixed(2));
+    checkoutSubtotal.textContent = `₱${subtotal.toFixed(2)}`;
+
     // Update the checkout form hidden fields
     document.getElementById("Order_Name").value = orderName; // Populate with product names
     document.getElementById("Price").value = subtotal.toFixed(2); // Populate with total price
     document.getElementById("Quantity").value = quantity; // Populate with total quantity
 
-    localStorage.setItem("subtotal", subtotal.toFixed(2));
-    checkoutSubtotal.textContent = `₱${subtotal.toFixed(2)}`;
 };
 
 // if on checkout page, display items
 if (checkoutItemsContainer) {
     displayCheckoutItems();
 }
+
+ // cart updates on page load
+ updateCartDisplay();
 
 });
 
