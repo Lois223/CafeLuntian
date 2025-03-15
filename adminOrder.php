@@ -1,6 +1,6 @@
 <?php
-  session_start();
-  include('mycon.php');
+session_start();
+include('mycon.php');
 ?>
 
 <!DOCTYPE html>
@@ -18,9 +18,10 @@
           overflow-x: auto; 
           width: 100%;
         }
-    </style>  
-  </head>
-  <body>
+    </style>
+</head>
+<body>
+<body>
     <aside class="sidebar">
       <div class="sidebar-header">
         <img src="img/logo3.png" alt="logo" />
@@ -67,96 +68,116 @@
 
     <main class="main">
         <header>
-            <h1>Order List</h1>
+          <h1>Order List</h1>
         </header>
 
         <section class="search">
-            <a href="#" class="search-icon"><i class="fas fa-search"></i></a>
-            <input type="text" id="searchInput" placeholder="Search Name or ID here" >   
+              <a href="#" class="search-icon"><i class="fas fa-search"></i></a>
+              <input type="text" id="searchInput" placeholder="Search Name or ID here" >   
         </section>
 
         <section class="search-result">
-            <h1>Search Results</h1><hr>
-            <div class="box-container" id="orderList">
-                <!-- PHP START HERE -->
-                <?php
+          <h1>Search Results</h1><hr>
+            <div class="table-wrapper">
+            <?php
                 include('mycon.php');
-                $sql = "SELECT * FROM customer_order_tbl";
+
+                $sql = "SELECT 
+                            c.Order_ID, c.Customer_Name, c.Contact, c.Email, c.Room_Num, c.Mode_of_Service, c.Time,
+                            i.Item_Name, i.Quantity, i.Price, i.Subtotal
+                        FROM customer_order_tbl c
+                        LEFT JOIN order_items_tbl i ON c.Order_ID = i.Order_ID
+                        ORDER BY c.Order_ID DESC";
+
                 $result = $connection->query($sql);
-                echo '<div class="table-wrapper">';
+
                 echo "<table id='userTable' border='1' width='100%'>";
-                echo "<tr align='center' class=tblheader>
-                        <td><b>Order_ID</b></td>
-                        <td><b>Customer_Name</b></td>
-                        <td><b>Order_Name</b></td>
+                echo "<tr align='center' class='tblheader'>
+                        <td><b>Order ID</b></td>
+                        <td><b>Customer Name</b></td>
+                        <td><b>Item Name</b></td>
                         <td><b>Quantity</b></td>
-                        <td><b>Price</b></td>
+                        <td><b>Item Price</b></td>
+                        <td><b>Total</b></td>
+                        <td><b>Subtotal</b></td> 
                         <td><b>Contact</b></td>
                         <td><b>Email</b></td>
                         <td><b>Time</b></td>
-                        <td><b>Room_Num</b></td>
-                        <td><b>Mode_of_Service</b></td>
-                       
-                  
+                        <td><b>Room Num</b></td>
+                        <td><b>Mode of Service</b></td>
+                        <td><b></b></td>
                       </tr>";
+
                 if ($result->num_rows > 0) {
+                    $prevOrderID = null;
+                    $rowspanCount = [];
+                    $orderTotal = [];
+
+                    // Calculate row spans and order totals
                     while ($row = $result->fetch_assoc()) {
-                        $Reservation_ID = $row['Order_ID'];
-                        echo'<tr>
-                                <td class="user-id">'.$row['Order_ID'].'</td>
-                                <td class="user-name">'.$row['Customer_Name'].'</td>
-                                <td>'.$row['Order_Name'].'</td>  
-                                <td>'.$row['Quantity'].'</td>    
-                                <td>'.$row['Price'].'</td>
-                                <td>'.$row['Contact'].'</td>  
-                                <td>'.$row['Email'].'</td>   
-                                <td>'.$row['Time'].'</td>
-                                <td>'.$row['Room_Num'].'</td> 
-                                <td>'.$row['Mode_of_Service'].'</td>  
-                                
-                              
-                                <td>
-                                  <a class="remove-row-button" href="DeletionQueries.php?act=DeleteUser&Customer_ID=' . urlencode($row['Order_ID']) . '" onclick="return confirm(\'Are you sure you want to delete this order?\');" class="icon-button">
-                                      <i class="fas fa-trash-alt"></i>
-                                  </a>
-                                </td>                             
-                            </tr>';
+                        if (!isset($rowspanCount[$row['Order_ID']])) {
+                            $rowspanCount[$row['Order_ID']] = 1;
+                            $orderTotal[$row['Order_ID']] = 0;
+                        } else {
+                            $rowspanCount[$row['Order_ID']]++;
+                        }
+                        $orderTotal[$row['Order_ID']] += $row['Subtotal'];
+                    }
+
+                    // Reset result pointer and fetch again
+                    $result->data_seek(0);
+                    $orderRowspan = [];
+
+                    while ($row = $result->fetch_assoc()) {
+                        $Order_ID = $row['Order_ID'];
+                        $isFirstRow = ($Order_ID != $prevOrderID);
+                        $formattedTime = date("h:i A", strtotime($row['Time'])); 
+                        $roomNumber = ($row['Mode_of_Service'] === "Pickup") ? "---" : $row['Room_Num'];
+
+                        echo '<tr>';
+
+                        if ($isFirstRow) {
+                            $orderRowspan[$Order_ID] = $rowspanCount[$Order_ID];
+
+                            echo '<td rowspan="' . $orderRowspan[$Order_ID] . '" class="user-id">' . $row['Order_ID'] . '</td>';
+                            echo '<td rowspan="' . $orderRowspan[$Order_ID] . '" class="user-name">' . $row['Customer_Name'] . '</td>';
+                        }
+
+                        echo '<td>' . $row['Item_Name'] . '</td>';
+                        echo '<td>' . $row['Quantity'] . '</td>';
+                        echo '<td>' . number_format($row['Price'], 2) . '</td>';
+                        echo '<td>' . number_format($row['Subtotal'], 2) . '</td>';
+
+                        if ($isFirstRow) {
+                            echo '<td rowspan="' . $orderRowspan[$Order_ID] . '"><b>' . number_format($orderTotal[$Order_ID], 2) . '</b></td>';
+                            echo '<td rowspan="' . $orderRowspan[$Order_ID] . '">' . $row['Contact'] . '</td>';
+                            echo '<td rowspan="' . $orderRowspan[$Order_ID] . '">' . $row['Email'] . '</td>';
+                            echo '<td rowspan="' . $orderRowspan[$Order_ID] . '">' . $formattedTime . '</td>';
+                            echo '<td rowspan="' . $orderRowspan[$Order_ID] . '">' . $roomNumber . '</td>';
+                            echo '<td rowspan="' . $orderRowspan[$Order_ID] . '">' . $row['Mode_of_Service'] . '</td>';
+                            echo '<td rowspan="' . $orderRowspan[$Order_ID] . '">
+                                    <a class="remove-row-button" href="DeletionQueries.php?act=DeleteOrder&Order_ID=' . urlencode($row['Order_ID']) . '" 
+                                    onclick="return confirm(\'Are you sure you want to delete this order?\');">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </a>
+                                  </td>';
+                        }
+
+                        echo '</tr>';
+
+                        $prevOrderID = $Order_ID;
                     }
                 } else {
-                     echo "<tr><td colspan='9' align='center'>No results found.</td></tr>";
-                  }
+                    echo "<tr><td colspan='13' align='center'>No orders found.</td></tr>";
+                }
+
                 echo "</table>";
-                echo '</div>';
-              ?>
+                ?>
+
             </div>
         </section>
     </main>
+
     <script src="main.js"></script>
-    <script>
-      //search bar input
-      const searchInput = document.getElementById("searchInput");
-      const userTable = document.getElementById("userTable");
-      const tableRows = userTable.getElementsByTagName("tr");
-
-      // Listen for input events 
-      searchInput.addEventListener("input", function () {
-        const searchTerm = searchInput.value.toLowerCase();
-
-        // Loop through all rows in the table 
-        for (let i = 1; i < tableRows.length; i++) {
-            const row = tableRows[i];
-            const userId = row.getElementsByClassName("user-id")[0].innerText.toLowerCase();
-            const userName = row.getElementsByClassName("user-name")[0].innerText.toLowerCase();
-
-            // Check if the search term is in the User ID or User Name
-            if (userId.includes(searchTerm) || userName.includes(searchTerm)) {
-                row.style.display = ""; // Show row if it matches
-            } else {
-                row.style.display = "none"; // Hide row if it doesn't match
-            }
-        }
-      });
-    </script>
-
-  </body>
+</body>
 </html>

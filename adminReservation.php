@@ -80,75 +80,59 @@
             <div class="box-container" id="reservationList">
                 <!-- PHP START HERE -->
                 <?php
-                include('mycon.php');
-                $sql = "SELECT * FROM table_reservation_tbl";
-                $result = $connection->query($sql);
-                echo '<div class="table-wrapper">';
-                echo "<table id='userTable' border='1' width='100%'>";
-                echo "<tr align='center' class=tblheader>
-                        <td><b>Reservation_ID</b></td>
-                        <td><b>Full Name</b></td>
-                        <td><b>Reservation_Date</b></td>
-                        <td><b>Reservation_Time</b></td>
-                        <td><b>Email</b></td>
-                        <td><b>Number of Guests</b></td>
-                        <td><b>Reservation Created</b></td>
-                        <td><b>Status</b></td>
-                      </tr>";
-                if ($result->num_rows > 0) {
-                    while ($row = $result->fetch_assoc()) {
-                        $Reservation_ID = $row['Reservation_ID'];
-                        echo'<tr>
-                                <td class="user-id">'.$row['Reservation_ID'].'</td>
-                                <td class="user-name">'.$row['Full_Name'].'</td>
-                                <td>'.$row['Reservation_Date'].'</td>  
-                                <td>'.$row['Reservation_Time'].'</td>
-                                <td>'.$row['Email'].'</td>    
-                                <td>'.$row['Pax'].'</td>   
-                                <td>'.$row['Reservation_Created'].'</td>   
-                                <td>'.$row['Status'].'</td>   
-                                <td>
-                                  <a class="remove-row-button" href="DeletionQueries.php?act=DeleteUser&Reservation_ID=' . urlencode($row['Reservation_ID']) . '" onclick="return confirm(\'Are you sure you want to delete this account?\');" class="icon-button">
-                                      <i class="fas fa-trash-alt"></i>
-                                  </a>
-                                </td>                             
-                            </tr>';
+                    include('mycon.php');
+                    $sql = "SELECT * FROM table_reservation_tbl";
+                    $result = $connection->query($sql);
+
+                    echo '<div class="table-wrapper">';
+                    echo "<table id='userTable' border='1' width='100%'>";
+                    echo "<tr align='center' class=tblheader>
+                            <td><b>Reservation ID</b></td>
+                            <td><b>Full Name</b></td>
+                            <td><b>Reservation Date</b></td>
+                            <td><b>Reservation Time</b></td>
+                            <td><b>Email</b></td>
+                            <td><b>Number of Guests</b></td>
+                            <td><b>Reservation Created</b></td>
+                            <td><b>Status</b></td>
+                            <td><b>Actions</b></td>
+                          </tr>";
+
+                    if ($result->num_rows > 0) {
+                        while ($row = $result->fetch_assoc()) {
+                            $formattedTime = date("h:i A", strtotime($row['Reservation_Time']));
+                            $formattedCreated = date("Y-m-d h:i A", strtotime($row['Reservation_Created'])); 
+
+                            echo '<tr>
+                                    <td class="user-id">' . $row['Reservation_ID'] . '</td>
+                                    <td class="user-name">' . $row['Full_Name'] . '</td>
+                                    <td>' . $row['Reservation_Date'] . '</td>  
+                                    <td>' . $formattedTime . '</td>
+                                    <td>' . $row['Email'] . '</td>    
+                                    <td>' . $row['Pax'] . '</td>   
+                                    <td>' . $formattedCreated . '</td>   
+                                    <td>' . $row['Status'] . '</td>   
+                                    <td>
+                                      <a class="remove-row-button" href="DeletionQueries.php?act=DeleteUser&Reservation_ID=' . urlencode($row['Reservation_ID']) . '" 
+                                        onclick="return confirm(\'Are you sure you want to delete this account?\');" class="icon-button">
+                                          <i class="fas fa-trash-alt"></i>
+                                      </a>
+                                    </td>                             
+                                  </tr>';
+                        }
+                    } else {
+                        echo "<tr><td colspan='9' align='center'>No results found.</td></tr>";
                     }
-                } else {
-                     echo "<tr><td colspan='9' align='center'>No results found.</td></tr>";
-                  }
-                echo "</table>";
-                echo '</div>';
-              ?>
+
+                    echo "</table>";
+                    echo '</div>';
+                    ?>
+
+
             </div>
         </section>
     </main>
 
     <script src="main.js"></script>
-    <script>
-      //search bar input
-      const searchInput = document.getElementById("searchInput");
-      const userTable = document.getElementById("userTable");
-      const tableRows = userTable.getElementsByTagName("tr");
-
-      // Listen for input events 
-      searchInput.addEventListener("input", function () {
-        const searchTerm = searchInput.value.toLowerCase();
-
-        // Loop through all rows in the table 
-        for (let i = 1; i < tableRows.length; i++) {
-            const row = tableRows[i];
-            const userId = row.getElementsByClassName("user-id")[0].innerText.toLowerCase();
-            const userName = row.getElementsByClassName("user-name")[0].innerText.toLowerCase();
-
-            // Check if the search term is in the User ID or User Name
-            if (userId.includes(searchTerm) || userName.includes(searchTerm)) {
-                row.style.display = ""; // Show row if it matches
-            } else {
-                row.style.display = "none"; // Hide row if it doesn't match
-            }
-        }
-      });
-    </script>
-
+</body>
 </html>

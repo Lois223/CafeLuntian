@@ -177,58 +177,139 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-     // display cart items on checkout page
-const displayCheckoutItems = () => {
-    if (!checkoutItemsContainer || !checkoutSubtotal) return;
+   // display cart items on checkout page
+    const displayCheckoutItems = () => {
+        if (!checkoutItemsContainer || !checkoutSubtotal) return;
 
-    let checkoutCart = JSON.parse(localStorage.getItem("cart")) || [];
+        let checkoutCart = JSON.parse(localStorage.getItem("cart")) || [];
 
-    if (checkoutCart.length === 0) {
-        checkoutItemsContainer.innerHTML = `<div class="empty-cart"><h3>Your cart is empty</h3></div>`;
-        checkoutSubtotal.textContent = "₱0.00";
-        return;
+        if (checkoutCart.length === 0) {
+            checkoutItemsContainer.innerHTML = `<div class="empty-cart"><h3>Your cart is empty</h3></div>`;
+            checkoutSubtotal.textContent = "₱0.00";
+            updateCartDataHiddenInput([]); // ensure hidden input is empty if no items
+            return;
+        }
+
+        let subtotal = 0;
+        let orderName = checkoutCart.map(item => item.name).join(", ");
+        let quantity = 0;
+
+        checkoutItemsContainer.innerHTML = checkoutCart.map(item => {
+            let addonPrice = item.addons === "coffee" ? 10 : item.addons === "alcohol" ? 50 : 0;
+            let itemTotal = (item.price + addonPrice) * item.quantity;
+            subtotal += itemTotal;
+            quantity += item.quantity;
+
+            return `
+                <div class="checkout-item">
+                    <img src="${item.image}" alt="${item.name}" width="50">
+                    <div class="checkout-details">
+                        <p><strong>${item.name}</strong> (${item.type})</p>
+                        <p>Quantity: ${item.quantity}</p>
+                        <p>Add-on: ${item.addons ? item.addons.charAt(0).toUpperCase() + item.addons.slice(1) : "None"}</p>
+                        <p class="total">₱${itemTotal.toFixed(2)}</p>
+                    </div>
+                </div>`;
+        }).join("");
+
+        localStorage.setItem("subtotal", subtotal.toFixed(2));
+        checkoutSubtotal.textContent = `₱${subtotal.toFixed(2)}`;
+
+        // update the checkout form hidden fields
+        document.getElementById("Order_Name").value = orderName;
+        document.getElementById("Price").value = subtotal.toFixed(2);
+        document.getElementById("Quantity").value = quantity;
+
+        // update cartData hidden input
+        updateCartDataHiddenInput(checkoutCart);
+    };
+
+    // ensure cart data is stored in hidden input before purchase
+    function updateCartDataHiddenInput(cartData) {
+        let cartDataInput = document.getElementById("cartData");
+        if (cartDataInput) {
+            cartDataInput.value = JSON.stringify(cartData);
+        }
     }
 
-    let subtotal = 0;
-    let orderName = checkoutCart.map(item => item.name).join(", ");
-    let quantity = 0;
+    // ensure cart data is updated on form submission
+    document.addEventListener("submit", function (event) {
+        if (event.target.id === "checkout-form") {
+            updateCartDataHiddenInput(JSON.parse(localStorage.getItem("cart")) || []);
+        }
+    });
 
-    checkoutItemsContainer.innerHTML = checkoutCart.map(item => {
-        let addonPrice = item.addons === "coffee" ? 10 : item.addons === "alcohol" ? 50 : 0;
-        let itemTotal = (item.price + addonPrice) * item.quantity;
-        subtotal += itemTotal;
-        quantity += item.quantity;
+    // display items
+    if (checkoutItemsContainer) {
+        displayCheckoutItems();
+    }
 
-        return `
-            <div class="checkout-item">
-                <img src="${item.image}" alt="${item.name}" width="50">
-                <div class="checkout-details">
-                    <p><strong>${item.name}</strong> (${item.type})</p>
-                    <p>Quantity: ${item.quantity}</p>
-                    <p>Add-on: ${item.addons ? item.addons.charAt(0).toUpperCase() + item.addons.slice(1) : "None"}</p>
-                    <p class="total">₱${itemTotal.toFixed(2)}</p>
-                </div>
-            </div>`;
-    }).join("");
+    //cart updates on page load
+    updateCartDisplay();
+});
 
-    
-    localStorage.setItem("subtotal", subtotal.toFixed(2));
-    checkoutSubtotal.textContent = `₱${subtotal.toFixed(2)}`;
 
-    // Update the checkout form hidden fields
-    document.getElementById("Order_Name").value = orderName; // Populate with product names
-    document.getElementById("Price").value = subtotal.toFixed(2); // Populate with total price
-    document.getElementById("Quantity").value = quantity; // Populate with total quantity
+// modal
+document.addEventListener("DOMContentLoaded", function () {
+    const checkoutBtn = document.getElementById("checkoutBtn");
+    const confirmationModal = document.getElementById("confirmationModal");
+    const cancelCheckout = document.getElementById("cancelCheckout");
+    const confirmCheckout = document.getElementById("confirmCheckout");
+    const checkoutForm = document.getElementById("checkoutForm");
+    const successMessage = document.getElementById("successMessage");
 
-};
+    // show the modal 
+    checkoutBtn.addEventListener("click", function () {
+        confirmationModal.classList.add("show");
+    });
 
-// if on checkout page, display items
-if (checkoutItemsContainer) {
-    displayCheckoutItems();
-}
+    // hide the modal 
+    cancelCheckout.addEventListener("click", function () {
+        confirmationModal.classList.remove("show");
+    });
 
- // cart updates on page load
- updateCartDisplay();
+    // proceed with checkout
+    confirmCheckout.addEventListener("click", function () {
+        confirmationModal.classList.remove("show"); // hide modal
+        successMessage.style.display = "block"; // show success message
+
+        setTimeout(() => {
+            successMessage.style.display = "none"; // hide success msg
+            checkoutForm.submit(); // submit the form
+        }, 3000);
+    });
 
 });
 
+//search bar input
+const searchInput = document.getElementById("searchInput");
+const userTable = document.getElementById("userTable");
+const tableRows = userTable.getElementsByTagName("tr");
+
+searchInput.addEventListener("input", function () {
+  const searchTerm = searchInput.value.toLowerCase();
+
+  // loop through all rows in the table
+  for (let i = 1; i < tableRows.length; i++) {
+      const row = tableRows[i];
+
+      // find user ID and name 
+      const userIdElem = row.getElementsByClassName("user-id")[0];
+      const userNameElem = row.getElementsByClassName("user-name")[0];
+
+      const userId = userIdElem ? userIdElem.innerText.toLowerCase() : "";
+      const userName = userNameElem ? userNameElem.innerText.toLowerCase() : "";
+
+      if (userId.includes(searchTerm) || userName.includes(searchTerm)) {
+          row.style.display = ""; // show row if it matches
+      } else {
+          row.style.display = "none"; // hide row if it doesn't match
+      }
+  }
+});
+
+// clear cart after purchase
+if (sessionStorage.getItem("orderComplete")) {
+    localStorage.removeItem("cart"); 
+    sessionStorage.removeItem("orderComplete"); 
+}

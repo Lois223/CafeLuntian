@@ -1,6 +1,7 @@
 <?php
 session_start();
 include('mycon.php');
+$showSuccessMessage = isset($_GET['success']) && $_GET['success'] == 1;
 ?>
 
 <!DOCTYPE html>
@@ -31,6 +32,7 @@ include('mycon.php');
             border-color: #356D59;
             outline: none;
         }
+        
         </style>
 </head>
 <body style="background-color: #f4f4f4;">
@@ -57,55 +59,68 @@ include('mycon.php');
                 </div>
             </div>
 
-            <form method="POST" action="checkoutScript.php" enctype="multipart/form-data">
-    <input type="hidden" name="cartData" id="cartData">
-    
-    <!-- Hidden fields for order summary -->
-    <input type="hidden" name="Order_Name" id="Order_Name">
-    <input type="hidden" name="Price" id="Price">
-    <input type="hidden" name="Quantity" id="Quantity">
+            <div id="successMessage" class="success-message" style="display: <?= $showSuccessMessage ? 'block' : 'none' ?>;">
+                ✔ Checkout Successful!
+            </div>
 
-    <div class="form-group">
-        <label for="name">Full Name (Preferably Registered Name in GCash):</label> <br>
-        <input type="text" name="Customer_Name" required>
-    </div>
 
-    <div class="form-group">
-        <label for="contact">Contact Number (Registered Number in GCash):</label> <br>
-        <input type="text" placeholder="09xx xxx xxx" name="Contact" required>
-    </div>
+            <form method="POST" action="checkoutScript.php" id="checkoutForm" onsubmit="submitCartData()">  
+                <input type="hidden" name="cartData" id="cartData">
+                <input type="hidden" name="Order_Name" id="Order_Name">
+                <input type="hidden" name="Price" id="Price">
+                <input type="hidden" name="Quantity" id="Quantity">
 
-    <div class="form-group">
-        <label for="email">Email Address:</label> <br>
-        <input type="email" placeholder="youremail@gmail.com" name="Email" required>
-    </div>
+                <div class="form-group">
+                    <label for="name">Full Name (Preferably Registered Name in GCash):</label> <br>
+                    <input type="text" name="Customer_Name" required>
+                </div>
 
-    <div class="form-group">
-        <label for="room">Room Number:</label> <br>
-        <input type="text" name="Room_Num" required>
-    </div>
+                <div class="form-group">
+                    <label for="contact">Contact Number (Registered Number in GCash):</label> <br>
+                    <input type="text" placeholder="09xx xxx xxx" name="Contact" required>
+                </div>
 
-    <div class="form-group">
-        <label for="orderType">Select Mode of Service:</label>
-        <select id="orderType" name="Mode_of_Service">
-            <option value="Delivery" selected>Delivery</option>
-            <option value="Pickup">Pickup</option>
-        </select>
-    </div>
+                <div class="form-group">
+                    <label for="email">Email Address:</label> <br>
+                    <input type="email" placeholder="youremail@gmail.com" name="Email" required>
+                </div>
 
-    <div class="form-group">
-        <label for="time">Time:</label> <br>
-        <input type="time" name="Time" required>
-    </div>
+                <div class="form-group">
+                    <label for="orderType">Select Mode of Service:</label>
+                    <select id="orderType" name="Mode_of_Service" onchange="toggleRoomField()">
+                        <option value="Pickup" selected>Pickup</option>
+                        <option value="Delivery">Delivery</option>
+                    </select>
+                </div>
 
-    <div class="form-group">
-        <label for="receipt">Upload Your Receipt:</label> <br>
-        <input type="file" name="Receipt" id="receipt" accept="image/*" required>
-    </div>
+                <div class="form-group" id="roomField" style="display: none;">
+                    <label for="room">Room Number:</label> <br>
+                    <input type="text" name="Room_Num">
+                </div>
 
-    <button type="submit" class="btn-1" name="Checkout">Complete Purchase</button>
-</form>
+                <div class="form-group">
+                    <label for="time">Time:</label> <br>
+                    <input type="time" name="Time" required>
+                </div>
 
+                <div class="form-group">
+                    <label for="receipt">Upload Your Receipt:</label> <br>
+                    <input type="file" name="Receipt" id="receipt" accept="image/*" required>
+                </div>
+
+                <button class="btn-1" name="Checkout" id="checkoutBtn">Complete Purchase</button>
+
+                <div id="confirmationModal" class="modal">
+                    <div class="modal-content">
+                        <h3>Non-Refundable Policy</h3>
+                        <p>Please note that this purchase is **non-refundable**. Do you agree to proceed?</p>
+                        <div class="modal-buttons">
+                            <button type="button" class="btn-cancel" id="cancelCheckout">Cancel</button>
+                            <button type="submit" class="btn-agree" id="confirmCheckout" name="confirmCheckout">Agree & Proceed</button>      
+                        </div>
+                    </div>
+                </div>
+            </form> 
         </div>
 
         <div class="separator"></div>
@@ -132,25 +147,6 @@ include('mycon.php');
             <a href="checkout.php" id="checkout-btn" class="checkout-btn">Checkout</a>
         </div>
     </div>
-
-    <script>
-
-    function updateCheckoutSummary(cartItems) {
-        let orderName = cartItems.map(item => item.name).join(", ");
-        let price = cartItems.reduce((total, item) => total + (item.price * item.quantity), 0);
-        let quantity = cartItems.reduce((total, item) => total + item.quantity, 0);
- 
-        document.getElementById("Order_Name").value = orderName;
-        document.getElementById("Price").value = price;
-        document.getElementById("Quantity").value = quantity;
-
-        document.getElementById("checkout-items").innerHTML = orderName;
-        document.getElementById("checkout-subtotal").innerHTML = `₱${price.toFixed(2)}`;
-    }
-
-    // Call the function when the user proceeds to checkout (e.g., cartItems is ready)
-    updateCheckoutSummary(cartItems);
-</script>
 
     <section class="footer-banner">
         <img src="img/banner.jpg">
@@ -200,6 +196,55 @@ include('mycon.php');
     </section>
 
     <script src="main.js"></script> 
+    <script>
+
+          // modal
+          document.addEventListener("DOMContentLoaded", function () {
+                const checkoutBtn = document.getElementById("checkoutBtn");
+                const confirmationModal = document.getElementById("confirmationModal");
+                const cancelCheckout = document.getElementById("cancelCheckout");
+                const confirmCheckout = document.getElementById("confirmCheckout");
+                const checkoutForm = document.getElementById("checkoutForm");
+                const successMessage = document.getElementById("successMessage");
+
+                // show modal 
+                checkoutBtn.addEventListener("click", function (event) {
+                    event.preventDefault(); 
+                    confirmationModal.classList.add("show");
+                });
+
+                // hide modal 
+                cancelCheckout.addEventListener("click", function () {
+                    confirmationModal.classList.remove("show");
+                });
+
+                // proceed with checkout when confirm is clicked
+                confirmCheckout.addEventListener("click", function () {
+                    confirmationModal.classList.remove("show"); // hide modal
+
+                    // show success message
+                    successMessage.style.display = "block";
+
+                    setTimeout(() => {
+                        checkoutForm.submit(); // submit the form 
+                    }, 5000); // delay form submission slightly 
+                });
+            });
+
+            // toggle mode for delivery
+            function toggleRoomField() {
+                var orderType = document.getElementById("orderType").value;
+                var roomField = document.getElementById("roomField");
+
+                // show the room field if 'Delivery' is selected
+                if (orderType === "Delivery") {
+                    roomField.style.display = "block";
+                } else {
+                    roomField.style.display = "none";
+                }
+            }
+            document.addEventListener("DOMContentLoaded", toggleRoomField);
+    </script>
 
 </body>
 </html>
