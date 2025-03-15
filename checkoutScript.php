@@ -99,7 +99,7 @@ if (isset($_POST['confirmCheckout'])) {
         }
 
         // Insert cart items into order_items_tbl
-        $insertItem = "INSERT INTO order_items_tbl (Order_ID, Item_Name, Price, Quantity, Subtotal) VALUES (?, ?, ?, ?, ?)";
+        $insertItem = "INSERT INTO order_items_tbl (Order_ID, Item_Name, Price, Quantity, Subtotal, Add_Ons, Add_Ons_Price) VALUES (?, ?, ?, ?, ?, ?, ?)";
         $stmtItem = mysqli_prepare($connection, $insertItem);
 
         foreach ($cartItems as $item) {
@@ -110,15 +110,18 @@ if (isset($_POST['confirmCheckout'])) {
             $Item_Name = $item['name'];
             $Item_Price = floatval($item['price']);
             $Item_Quantity = intval($item['quantity']);
-            $Subtotal = $Item_Price * $Item_Quantity;  // Ensure proper subtotal calculation
+            $Subtotal = ($Item_Price + (isset($item['addons_price']) ? floatval($item['addons_price']) : 0.00)) * $Item_Quantity;
+            $Add_Ons = isset($item['addons']) ? $item['addons'] : null;
+            $Add_Ons_Price = isset($item['addons_price']) ? floatval($item['addons_price']) : 0.00;
 
-            mysqli_stmt_bind_param($stmtItem, "ssddi", $Order_ID, $Item_Name, $Item_Price, $Item_Quantity, $Subtotal);
+            mysqli_stmt_bind_param($stmtItem, "ssdddsd", $Order_ID, $Item_Name, $Item_Price, $Item_Quantity, $Subtotal, $Add_Ons, $Add_Ons_Price);
             $itemResult = mysqli_stmt_execute($stmtItem);
 
             if (!$itemResult) {
                 throw new Exception('Insert Error in order_items_tbl: ' . mysqli_error($connection));
             }
         }
+
 
         mysqli_commit($connection);
         echo '<script>
