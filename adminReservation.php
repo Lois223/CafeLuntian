@@ -81,12 +81,12 @@
                 <!-- PHP START HERE -->
                 <?php
                     include('mycon.php');
-                    $sql = "SELECT * FROM table_reservation_tbl";
+
+                    $sql = "SELECT * FROM table_reservation_tbl ORDER BY Reservation_ID DESC";
                     $result = $connection->query($sql);
 
-                    echo '<div class="table-wrapper">';
                     echo "<table id='userTable' border='1' width='100%'>";
-                    echo "<tr align='center' class=tblheader>
+                    echo "<tr align='center' class='tblheader'>
                             <td><b>Reservation ID</b></td>
                             <td><b>Full Name</b></td>
                             <td><b>Reservation Date</b></td>
@@ -99,34 +99,66 @@
                           </tr>";
 
                     if ($result->num_rows > 0) {
-                        while ($row = $result->fetch_assoc()) {
-                            $formattedTime = date("h:i A", strtotime($row['Reservation_Time']));
-                            $formattedCreated = date("Y-m-d h:i A", strtotime($row['Reservation_Created'])); 
+                        $prevReservationID = null;
+                        $rowspanCount = [];
+                        $reservationGroups = [];
+                        $groupIndex = 0;
 
-                            echo '<tr>
-                                    <td class="user-id">' . $row['Reservation_ID'] . '</td>
-                                    <td class="user-name">' . $row['Full_Name'] . '</td>
-                                    <td>' . $row['Reservation_Date'] . '</td>  
-                                    <td>' . $formattedTime . '</td>
-                                    <td>' . $row['Email'] . '</td>    
-                                    <td>' . $row['Pax'] . '</td>   
-                                    <td>' . $formattedCreated . '</td>   
-                                    <td>' . $row['Status'] . '</td>   
-                                    <td>
-                                      <a class="remove-row-button" href="DeletionQueries.php?act=DeleteUser&Reservation_ID=' . urlencode($row['Reservation_ID']) . '" 
-                                        onclick="return confirm(\'Are you sure you want to delete this account?\');" class="icon-button">
-                                          <i class="fas fa-trash-alt"></i>
-                                      </a>
-                                    </td>                             
-                                  </tr>';
+                        while ($row = $result->fetch_assoc()) {
+                            if (!isset($rowspanCount[$row['Reservation_ID']])) {
+                                $rowspanCount[$row['Reservation_ID']] = 1;
+                                $reservationGroups[$row['Reservation_ID']] = $groupIndex % 2 == 0 ? "group-even" : "group-odd";
+                                $groupIndex++;
+                            } else {
+                                $rowspanCount[$row['Reservation_ID']]++;
+                            }
+                        }
+
+                        $result->data_seek(0);
+                        $reservationRowspan = [];
+
+                        while ($row = $result->fetch_assoc()) {
+                            $Reservation_ID = $row['Reservation_ID'];
+                            $isFirstRow = ($Reservation_ID != $prevReservationID);
+                            $formattedTime = date("h:i A", strtotime($row['Reservation_Time']));
+                            $formattedCreated = date("Y-m-d h:i A", strtotime($row['Reservation_Created']));
+                            $rowClass = $reservationGroups[$Reservation_ID];
+
+                            echo '<tr class="' . $rowClass . '">';
+
+                            if ($isFirstRow) {
+                                $reservationRowspan[$Reservation_ID] = $rowspanCount[$Reservation_ID];
+
+                                echo '<td rowspan="' . $reservationRowspan[$Reservation_ID] . '" class="user-id">' . $row['Reservation_ID'] . '</td>';
+                                echo '<td rowspan="' . $reservationRowspan[$Reservation_ID] . '" class="user-name">' . $row['Full_Name'] . '</td>';
+                            }
+
+                            echo '<td>' . $row['Reservation_Date'] . '</td>';
+                            echo '<td>' . $formattedTime . '</td>';
+                            echo '<td>' . $row['Email'] . '</td>';
+                            echo '<td>' . $row['Pax'] . '</td>';
+                            echo '<td>' . $formattedCreated . '</td>';
+                            echo '<td>' . $row['Status'] . '</td>';
+
+                            if ($isFirstRow) {
+                                echo '<td rowspan="' . $reservationRowspan[$Reservation_ID] . '">
+                                        <a class="remove-row-button" href="DeletionQueries.php?act=DeleteUser&Reservation_ID=' . urlencode($row['Reservation_ID']) . '" 
+                                        onclick="return confirm(\'Are you sure you want to delete this reservation?\');">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </a>
+                                      </td>';
+                            }
+
+                            echo '</tr>';
+                            $prevReservationID = $Reservation_ID;
                         }
                     } else {
-                        echo "<tr><td colspan='9' align='center'>No results found.</td></tr>";
+                        echo "<tr><td colspan='9' align='center'>No reservations found.</td></tr>";
                     }
 
                     echo "</table>";
-                    echo '</div>';
                     ?>
+
 
 
             </div>

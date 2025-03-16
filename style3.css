@@ -234,12 +234,12 @@ table td {
   color: #255141;
 }
 
-table tr:nth-of-type(even) {
-  background-color: #ffffff; 
+.group-even {
+  background-color: #cce3c8; 
 }
 
-table tr:nth-of-type(odd) {
-  background-color: #ecf6f8; 
+.group-odd {
+  background-color: #ffffff; 
 }
 
 .td-btn {

@@ -80,107 +80,113 @@ include('mycon.php');
           <h1>Search Results</h1><hr>
             <div class="table-wrapper">
             <?php
-                include('mycon.php');
+              include('mycon.php');
 
-                $sql = "SELECT 
-                            c.Order_ID, c.Customer_Name, c.Contact, c.Email, c.Room_Num, c.Mode_of_Service, c.Time,
-                            i.Item_Name, i.Quantity, i.Price, i.Subtotal, i.Add_Ons, i.Add_Ons_Price
-                        FROM customer_order_tbl c
-                        LEFT JOIN order_items_tbl i ON c.Order_ID = i.Order_ID
-                        ORDER BY c.Order_ID DESC";
+              $sql = "SELECT 
+                          c.Order_ID, c.Customer_Name, c.Contact, c.Email, c.Room_Num, c.Mode_of_Service, c.Time,
+                          i.Item_Name, i.Quantity, i.Price, i.Subtotal, i.Add_Ons, i.Add_Ons_Price
+                      FROM customer_order_tbl c
+                      LEFT JOIN order_items_tbl i ON c.Order_ID = i.Order_ID
+                      ORDER BY c.Order_ID DESC";
 
-                $result = $connection->query($sql);
+              $result = $connection->query($sql);
 
-                echo "<table id='userTable' border='1' width='100%'>";
-                echo "<tr align='center' class='tblheader'>
-                        <td><b>Order ID</b></td>
-                        <td><b>Customer Name</b></td>
-                        <td><b>Item (Add-Ons)</b></td>
-                        <td><b>Quantity</b></td>
-                        <td><b>Item Price</b></td>
-                        <td><b>Add-On Price</b></td>
-                        <td><b>Total</b></td> 
-                        <td><b>Subtotal</b></td> 
-                        <td><b>Contact</b></td>
-                        <td><b>Email</b></td>
-                        <td><b>Time</b></td>
-                        <td><b>Room Num</b></td>
-                        <td><b>Mode of Service</b></td>
-                        <td><b>Actions</b></td>
-                      </tr>";
+              echo "<table id='userTable' border='1' width='100%'>";
+              echo "<tr align='center' class='tblheader'>
+                      <td><b>Order ID</b></td>
+                      <td><b>Customer Name</b></td>
+                      <td><b>Item (Add-Ons)</b></td>
+                      <td><b>Quantity</b></td>
+                      <td><b>Item Price</b></td>
+                      <td><b>Add-On Price</b></td>
+                      <td><b>Total</b></td> 
+                      <td><b>Subtotal</b></td> 
+                      <td><b>Contact</b></td>
+                      <td><b>Email</b></td>
+                      <td><b>Time</b></td>
+                      <td><b>Room Num</b></td>
+                      <td><b>Mode of Service</b></td>
+                      <td><b>Actions</b></td>
+                    </tr>";
 
-                if ($result->num_rows > 0) {
-                    $prevOrderID = null;
-                    $rowspanCount = [];
-                    $orderTotal = [];
+              if ($result->num_rows > 0) {
+                  $prevOrderID = null;
+                  $rowspanCount = [];
+                  $orderTotal = [];
+                  $orderGroups = [];
+                  $groupIndex = 0; 
 
-                    // calculate row spans and order totals
-                    while ($row = $result->fetch_assoc()) {
-                        if (!isset($rowspanCount[$row['Order_ID']])) {
-                            $rowspanCount[$row['Order_ID']] = 1;
-                            $orderTotal[$row['Order_ID']] = 0;
-                        } else {
-                            $rowspanCount[$row['Order_ID']]++;
-                        }
-                        $orderTotal[$row['Order_ID']] += $row['Subtotal'];
-                    }
+                  // Calculate row spans and order totals
+                  while ($row = $result->fetch_assoc()) {
+                      if (!isset($rowspanCount[$row['Order_ID']])) {
+                          $rowspanCount[$row['Order_ID']] = 1;
+                          $orderTotal[$row['Order_ID']] = 0;
+                          $orderGroups[$row['Order_ID']] = $groupIndex % 2 == 0 ? "group-even" : "group-odd";
+                          $groupIndex++; 
+                      } else {
+                          $rowspanCount[$row['Order_ID']]++;
+                      }
+                      $orderTotal[$row['Order_ID']] += $row['Subtotal'];
+                  }
 
-                    // reset result pointer and fetch again
-                    $result->data_seek(0);
-                    $orderRowspan = [];
+                  // Reset result pointer and fetch again
+                  $result->data_seek(0);
+                  $orderRowspan = [];
 
-                    while ($row = $result->fetch_assoc()) {
-                        $Order_ID = $row['Order_ID'];
-                        $isFirstRow = ($Order_ID != $prevOrderID);
-                        $formattedTime = date("h:i A", strtotime($row['Time'])); 
-                        $roomNumber = ($row['Mode_of_Service'] === "Pickup") ? "---" : $row['Room_Num'];
+                  while ($row = $result->fetch_assoc()) {
+                      $Order_ID = $row['Order_ID'];
+                      $isFirstRow = ($Order_ID != $prevOrderID);
+                      $formattedTime = date("h:i A", strtotime($row['Time'])); 
+                      $roomNumber = ($row['Mode_of_Service'] === "Pickup") ? "---" : $row['Room_Num'];
+                      $rowClass = $orderGroups[$Order_ID]; 
 
-                        // combine Item Name and Add-Ons
-                        $itemWithAddOns = $row['Item_Name'];
-                        if (!empty($row['Add_Ons'])) {
-                            $itemWithAddOns .= " (" . $row['Add_Ons'] . ")";
-                        }
+                      // Combine Item Name and Add-Ons
+                      $itemWithAddOns = $row['Item_Name'];
+                      if (!empty($row['Add_Ons'])) {
+                          $itemWithAddOns .= " (" . $row['Add_Ons'] . ")";
+                      }
 
-                        echo '<tr>';
+                      echo '<tr class="' . $rowClass . '">';
 
-                        if ($isFirstRow) {
-                            $orderRowspan[$Order_ID] = $rowspanCount[$Order_ID];
+                      if ($isFirstRow) {
+                          $orderRowspan[$Order_ID] = $rowspanCount[$Order_ID];
 
-                            echo '<td rowspan="' . $orderRowspan[$Order_ID] . '" class="user-id">' . $row['Order_ID'] . '</td>';
-                            echo '<td rowspan="' . $orderRowspan[$Order_ID] . '" class="user-name">' . $row['Customer_Name'] . '</td>';
-                        }
+                          echo '<td rowspan="' . $orderRowspan[$Order_ID] . '" class="user-id">' . $row['Order_ID'] . '</td>';
+                          echo '<td rowspan="' . $orderRowspan[$Order_ID] . '" class="user-name">' . $row['Customer_Name'] . '</td>';
+                      }
 
-                        echo '<td>' . $itemWithAddOns . '</td>'; 
-                        echo '<td>' . $row['Quantity'] . '</td>';
-                        echo '<td>' . number_format($row['Price'], 2) . '</td>';
-                        echo '<td>' . (!empty($row['Add_Ons_Price']) ? number_format($row['Add_Ons_Price'], 2) : '0.00') . '</td>'; 
-                        echo '<td>' . number_format($row['Subtotal'], 2) . '</td>'; 
+                      echo '<td>' . $itemWithAddOns . '</td>'; 
+                      echo '<td>' . $row['Quantity'] . '</td>';
+                      echo '<td>' . number_format($row['Price'], 2) . '</td>';
+                      echo '<td>' . (!empty($row['Add_Ons_Price']) ? number_format($row['Add_Ons_Price'], 2) : '0.00') . '</td>'; 
+                      echo '<td>' . number_format($row['Subtotal'], 2) . '</td>'; 
 
-                        if ($isFirstRow) {
-                            echo '<td rowspan="' . $orderRowspan[$Order_ID] . '"><b>' . number_format($orderTotal[$Order_ID], 2) . '</b></td>'; 
-                            echo '<td rowspan="' . $orderRowspan[$Order_ID] . '">' . $row['Contact'] . '</td>';
-                            echo '<td rowspan="' . $orderRowspan[$Order_ID] . '">' . $row['Email'] . '</td>';
-                            echo '<td rowspan="' . $orderRowspan[$Order_ID] . '">' . $formattedTime . '</td>';
-                            echo '<td rowspan="' . $orderRowspan[$Order_ID] . '">' . $roomNumber . '</td>';
-                            echo '<td rowspan="' . $orderRowspan[$Order_ID] . '">' . $row['Mode_of_Service'] . '</td>';
-                            echo '<td rowspan="' . $orderRowspan[$Order_ID] . '">
-                                    <a class="remove-row-button" href="DeletionQueries.php?act=DeleteOrder&Order_ID=' . urlencode($row['Order_ID']) . '" 
-                                    onclick="return confirm(\'Are you sure you want to delete this order?\');">
-                                        <i class="fas fa-trash-alt"></i>
-                                    </a>
-                                  </td>';
-                        }
+                      if ($isFirstRow) {
+                          echo '<td rowspan="' . $orderRowspan[$Order_ID] . '"><b>' . number_format($orderTotal[$Order_ID], 2) . '</b></td>'; 
+                          echo '<td rowspan="' . $orderRowspan[$Order_ID] . '">' . $row['Contact'] . '</td>';
+                          echo '<td rowspan="' . $orderRowspan[$Order_ID] . '">' . $row['Email'] . '</td>';
+                          echo '<td rowspan="' . $orderRowspan[$Order_ID] . '">' . $formattedTime . '</td>';
+                          echo '<td rowspan="' . $orderRowspan[$Order_ID] . '">' . $roomNumber . '</td>';
+                          echo '<td rowspan="' . $orderRowspan[$Order_ID] . '">' . $row['Mode_of_Service'] . '</td>';
+                          echo '<td rowspan="' . $orderRowspan[$Order_ID] . '">
+                                  <a class="remove-row-button" href="DeletionQueries.php?act=DeleteOrder&Order_ID=' . urlencode($row['Order_ID']) . '" 
+                                  onclick="return confirm(\'Are you sure you want to delete this order?\');">
+                                      <i class="fas fa-trash-alt"></i>
+                                  </a>
+                                </td>';
+                      }
 
-                        echo '</tr>';
+                      echo '</tr>';
 
-                        $prevOrderID = $Order_ID;
-                    }
-                } else {
-                    echo "<tr><td colspan='14' align='center'>No orders found.</td></tr>";
-                }
+                      $prevOrderID = $Order_ID;
+                  }
+              } else {
+                  echo "<tr><td colspan='14' align='center'>No orders found.</td></tr>";
+              }
 
-                echo "</table>";
-                ?>
+              echo "</table>";
+              ?>
+
 
             </div>
         </section>

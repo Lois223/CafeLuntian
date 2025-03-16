@@ -96,6 +96,14 @@
                 </div>
             </div>
         </section>
+    
+        <section class="vid">     
+            <div class="vid-container">
+                <video autoplay muted loop>
+                    <source src="vid/cafe.mp4" type="video/mp4">
+                </video>
+            </div>  
+        </section>
 
         <section class="services" id="services">
             <h1>Services</h1>
@@ -175,7 +183,31 @@
             </div>
         </div>
 
-        <section class="footer-banner">
+        <section class="hacienda">
+            <img src="img/hacienda.jpeg" alt="Hacienda Darasa Resort & Hotel">
+            <div class="content">
+                <h1>Hacienda Darasa Resort & Hotel</h1>
+                <p>Experience a relaxing getaway at Hacienda Darasa Resort & Hotel. Enjoy nature, comfort, 
+                    and top-notch amenities perfect for your vacation, events, or retreats.</p>
+                <a href="" id="btn-1" class="btn-1">Go to Page</a>
+                
+                <div class="contact-info">
+                    <h2>Contact Us</h2>
+                    <p><strong>Phone:</strong> 0915 061 6194</p>
+                    <p><strong>Email:</strong> fo.haciendadarasa@gmail.com</p>
+                    <p><strong>Address:</strong> 791 President Laurel Highway, Brgy. Darasa, Tanauan</p>
+                </div>
+
+                <div class="social-links">
+                    <h2>Follow Us</h2>
+                    <a href="" target="_blank" class="social-icon">
+                        <i class="fab fa-facebook"></i> Facebook
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section class="footer-banner" id="footer-banner-index">
             <img src="img/banner.jpg">
             <div class="content">
                 <h1>Every cup tells a story.</h1>

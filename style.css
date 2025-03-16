@@ -483,6 +483,21 @@ section {
     background-color: #41a884;
 }
 
+/* style for vid-index */
+.vid{
+    margin-top: clamp(5vh, 3vw, 5vh);
+}
+.vid .vid-container{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.vid .vid-container video{
+    height: auto;
+    width: 70vw;
+}
+
 /*style for services section*/
 .services {
     margin-top: clamp(10vh, 5vw, 25vh);
@@ -644,8 +659,96 @@ section {
 }
 
 
+/* style for hacienda */
+.hacienda {
+    margin-top: clamp(8vh, 15vh, 20vh);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: clamp(3vh, 7vh, 10vh) clamp(4vw, 5vw, 6vw);
+    background-color: #f8f8f8;
+    flex-wrap: wrap;
+}
+
+.hacienda img {
+    width: clamp(40vw, 50vw, 55vw);
+    max-width: clamp(35rem, 50rem, 60rem); 
+    height: auto; 
+    border-radius: clamp(0.5rem, 1rem, 1.5rem);
+    object-fit: cover;
+}
+
+.hacienda .content {
+    width: clamp(35vw, 40vw, 45vw);
+    padding: clamp(1.5vh, 2vh, 2.5vh) clamp(2vw, 2.5vw, 3vw);
+    text-align: left;
+}
+
+.hacienda h1 {
+    font-size: clamp(1.3rem, 2.3rem, 2.3rem);
+    color: #356D59;
+}
+
+.hacienda p {
+    font-size: clamp(1rem, 1.1rem, 1.1rem);
+    margin: clamp(0.5vh, 1vh, 1.5vh) 0;
+    color: #356D59;
+}
+
+.hacienda .btn-1 {
+    display: inline-block;
+    margin-top: clamp(1vh, 2vh, 2.5vh);
+    padding: clamp(0.8vh, 1.2vh, 1.5vh) clamp(1.5vw, 2vw, 2.5vw);
+    background-color: #356D59;
+    color: white;
+    text-decoration: none;
+    border-radius: clamp(0.3rem, 0.5rem, 0.8rem);
+    font-size: clamp(1.2rem, 1.3rem, 1.3rem);
+    transition: 0.3s;
+}
+
+.hacienda .btn-1:hover {
+    background-color: #41a884;
+}
+
+.hacienda .contact-info,
+.hacienda .social-links {
+    margin-top: clamp(1vh, 2vh, 3vh);
+}
+
+.hacienda .contact-info h2,
+.hacienda .social-links h2 {
+    font-size: clamp(1rem, 1.5rem, 1.5rem);
+    color: #356D59;
+}
+
+.hacienda .contact-info p,
+.hacienda .social-links a {
+    font-size: clamp(1rem, 1.1rem, 1.1rem);
+    color: #356D59;
+    margin: clamp(0.3vh, 0.5vh, 1vh) 0;
+    text-decoration: none;
+}
+
+.hacienda .social-icon {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: #356D59;
+    font-size: clamp(1rem, 1.5rem, 1.8rem);
+}
+
+.hacienda .social-icon i {
+    margin-right: clamp(0.5rem, 0.8rem, 1rem);
+    font-size: clamp(1rem, 1.5rem, 1.5rem);
+    color: #356D59;
+}
 
 /*style for footer-banner*/
+#footer-banner-index {
+    margin-top: 0;
+}
+
 .footer-banner {
     width: 100%;
     height: clamp(45vh, 50vh, 55vh);
@@ -1672,25 +1775,6 @@ input[type="text"] {
     }
 }
 
-/* style for vid-index */
-.vid{
-    margin-top: clamp(5vh, 3vw, 5vh);
-}
-.vid .vid-container{
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-}
-
-.vid .vid-container video{
-    height: auto;
-    width: 70vw;
-}
-
-/* style for hacienda */
-
-
-
 
 @media (max-width: 1024px) {
     /* checkout-nav */
@@ -2019,6 +2103,49 @@ input[type="text"] {
         height: 70px; 
         object-fit: cover; 
         border-radius: 5px; 
+    }
+
+     /* hacienda */
+    .hacienda {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .hacienda img {
+        width: clamp(70vw, 80vw, 90vw);
+        max-width: 90vw;
+    }
+
+    .hacienda .content {
+        width: clamp(80vw, 90vw, 100vw);
+        padding-top: clamp(2vh, 3vh, 4vh);
+    }
+
+    .hacienda h1 {
+        font-size: clamp(1.2rem, 2rem, 2rem);
+        text-align: center;
+        margin-top: 1.5vh;
+    }
+
+    .hacienda p {
+        font-size: clamp(1rem, 1.1rem, 1.1rem);
+        text-align: justify;
+        margin-top: 2.5vh;
+    }
+
+    .hacienda .btn-1 {
+        font-size: clamp(1rem, 1rem, 1rem);
+        padding: clamp(0.5vh, 1vh, 1.2vh) clamp(1vw, 2vw, 2.5vw);
+    }
+
+    .hacienda .contact-info h2,
+    .hacienda .social-links h2 {
+        font-size: clamp(1rem, 1rem, 1rem);
+    }
+
+    .hacienda .contact-info p,
+    .hacienda .social-links a {
+        font-size: clamp(1rem, 1rem, 1rem);
     }
 
      /* footer-banner */

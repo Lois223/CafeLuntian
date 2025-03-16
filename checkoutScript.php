@@ -127,7 +127,9 @@ if (isset($_POST['confirmCheckout'])) {
         echo '<script>
             localStorage.removeItem("cart"); // Clear cart from localStorage
             sessionStorage.setItem("orderComplete", "true"); // set flag to ensure cart clears on reload
-            window.location.assign("menu.php");
+            setTimeout(() => {
+                window.location.assign("menu.php");
+            }, 2100);
         </script>';
         
 
