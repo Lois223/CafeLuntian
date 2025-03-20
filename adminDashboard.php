@@ -1,3 +1,4 @@
+
 <?php
     session_start();
     include('mycon.php');
@@ -59,7 +60,7 @@
           <div class="user-profile">
             <img src="img/profile.png" alt="Profile Image" />
             <div class="user-detail">
-              <h3><?php echo $_SESSION['FName']." ".$_SESSION['LName']; ?></h3>
+              <h3><?php echo $_SESSION['User_FName']." ".$_SESSION['User_LName']; ?></h3>
               <span>Admin</span>
             </div>
           </div>
@@ -93,7 +94,7 @@
             <i class="ml-4 fas fa-cog text-gray-600">
             </i>
             <div class="ml-4 flex items-center">
-            <img alt="User Avatar" class="rounded-full" height="40" src="img/avatar2.png" width="40"/>
+            <img alt="User Avatar" class="rounded-full" height="40" src="img/profile.png" width="40"/>
             <div class="ml-2">
               <p class="font-bold">
               <?php echo $_SESSION['User_FName'] . ' ' . $_SESSION['User_LName']; ?>

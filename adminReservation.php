@@ -81,7 +81,12 @@
                 <!-- PHP START HERE -->
                 <?php
                     include('mycon.php');
-
+                    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['reservation_id'], $_POST['status'])) {
+                      $reservationId = $_POST['reservation_id'];
+                      $status = $_POST['status'];
+                      $updateSql = "UPDATE table_reservation_tbl SET Status='$status' WHERE Reservation_ID='$reservationId'";
+                      $connection->query($updateSql);
+                  }
                     $sql = "SELECT * FROM table_reservation_tbl ORDER BY Reservation_ID DESC";
                     $result = $connection->query($sql);
 
@@ -139,14 +144,23 @@
                             echo '<td>' . $row['Pax'] . '</td>';
                             echo '<td>' . $formattedCreated . '</td>';
                             echo '<td>' . $row['Status'] . '</td>';
+                            
 
                             if ($isFirstRow) {
                                 echo '<td rowspan="' . $reservationRowspan[$Reservation_ID] . '">
-                                        <a class="remove-row-button" href="DeletionQueries.php?act=DeleteUser&Reservation_ID=' . urlencode($row['Reservation_ID']) . '" 
-                                        onclick="return confirm(\'Are you sure you want to delete this reservation?\');">
-                                            <i class="fas fa-trash-alt"></i>
-                                        </a>
-                                      </td>';
+                                <div style="display: flex; flex-direction: column; gap: 10px;">        
+                                    <form method="POST" style="display:inline;">
+                                      <input type="hidden" name="reservation_id" value="'.$row['Reservation_ID'].'">
+                                      <input type="hidden" name="status" value="confirmed">
+                                      <button style="background-color: #4CAF50; color: white; border: none; padding: 10px 10px; cursor: pointer; border-radius: 5px;">Confirm</button>
+                                    </form>
+                                    <form method="POST" style="display:inline;">
+                                      <input type="hidden" name="reservation_id" value="'.$row['Reservation_ID'].'">
+                                      <input type="hidden" name="status" value="canceled">
+                                      <button style="background-color: #f44336; color: white; border: none; padding: 10px 10px; cursor: pointer; border-radius: 5px;">Cancel</button>
+                                    </form>
+                                </div>
+                              </td>';
                             }
 
                             echo '</tr>';
@@ -164,7 +178,16 @@
             </div>
         </section>
     </main>
-
+    <script>
+   function updateStatus(reservationId, status) {
+     const statusElement = document.getElementById(`status-${reservationId}`);
+     if (status === 'confirmed') {
+       statusElement.innerHTML = '<span class="bg-green-500 text-white px-2 py-1 rounded-md">Confirmed</span>';
+     } else if (status === 'canceled') {
+       statusElement.innerHTML = '<span class="bg-red-500 text-white px-2 py-1 rounded-md">Canceled</span>';
+     }
+   }
+  </script>
     <script src="main.js"></script>
 </body>
 </html>

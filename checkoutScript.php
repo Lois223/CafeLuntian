@@ -72,14 +72,16 @@ if (isset($_POST['confirmCheckout'])) {
     }
 
     // Insert into customer_order_tbl
-    $insertOrder = "INSERT INTO customer_order_tbl (Order_ID, Customer_Name, Contact, Email, Room_Num, Mode_of_Service, Time, Receipt)
-                    VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+    $insertOrder = "INSERT INTO customer_order_tbl (Order_ID, Customer_Name, Contact, Email, Room_Num, Mode_of_Service, Time, Receipt, Status)
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+    $status = "pending";
 
     try {
         mysqli_begin_transaction($connection);
 
         $stmt = mysqli_prepare($connection, $insertOrder);
-        mysqli_stmt_bind_param($stmt, "ssssssss", $Order_ID, $Customer_Name, $Contact, $Email, $Room_Num, $Mode_of_Service, $Time, $receiptPath);
+        mysqli_stmt_bind_param($stmt, "sssssssss", $Order_ID, $Customer_Name, $Contact, $Email, $Room_Num, $Mode_of_Service, $Time, $receiptPath, $status);
         $orderResult = mysqli_stmt_execute($stmt);
 
         if (!$orderResult) {
@@ -99,39 +101,64 @@ if (isset($_POST['confirmCheckout'])) {
         }
 
         // Insert cart items into order_items_tbl
-        $insertItem = "INSERT INTO order_items_tbl (Order_ID, Item_Name, Price, Quantity, Subtotal, Add_Ons, Add_Ons_Price) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        $insertItem = "INSERT INTO order_items_tbl (Order_ID, Item_Name, Price, Quantity, Subtotal, Add_Ons, Add_Ons_Price, Status) 
+                       VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+
         $stmtItem = mysqli_prepare($connection, $insertItem);
 
         foreach ($cartItems as $item) {
             if (!isset($item['name'], $item['price'], $item['quantity'])) {
                 throw new Exception('Error: cart item has missing fields.');
             }
-
+        
             $Item_Name = $item['name'];
             $Item_Price = floatval($item['price']);
             $Item_Quantity = intval($item['quantity']);
-            $Subtotal = ($Item_Price + (isset($item['addons_price']) ? floatval($item['addons_price']) : 0.00)) * $Item_Quantity;
-            $Add_Ons = isset($item['addons']) ? $item['addons'] : null;
-            $Add_Ons_Price = isset($item['addons_price']) ? floatval($item['addons_price']) : 0.00;
+            $Subtotal = ($Item_Price + (isset($item['Add_Ons_price']) ? floatval($item['Add_Ons_price']) : 0.00)) * $Item_Quantity;
+        
+            // Debugging Step - Display received data
+            echo "<pre>";
+            print_r($item);
+            echo "</pre>";
+        
+            $Add_Ons = isset($item['Add_Ons']) 
+                        ? (is_array($item['Add_Ons']) 
+                        ? implode(', ', $item['Add_Ons']) 
+                        : $item['Add_Ons']) // If it's already a string, assign directly
+                        : null;
 
-            mysqli_stmt_bind_param($stmtItem, "ssdddsd", $Order_ID, $Item_Name, $Item_Price, $Item_Quantity, $Subtotal, $Add_Ons, $Add_Ons_Price);
+            $Add_Ons_Price = isset($item['Add_Ons_price']) 
+                        ? floatval($item['Add_Ons_price']) 
+                        : 0.00;
+
+        
+            mysqli_stmt_bind_param($stmtItem, "ssdddsds", 
+                $Order_ID, 
+                $Item_Name, 
+                $Item_Price, 
+                $Item_Quantity, 
+                $Subtotal, 
+                $Add_Ons, 
+                $Add_Ons_Price, 
+                $status
+            );
+        
             $itemResult = mysqli_stmt_execute($stmtItem);
-
+        
             if (!$itemResult) {
-                throw new Exception('Insert Error in order_items_tbl: ' . mysqli_error($connection));
-            }
+                echo 'SQL Error: ' . mysqli_error($connection);
+            }            
         }
-
+        
 
         mysqli_commit($connection);
         echo '<script>
             localStorage.removeItem("cart"); // Clear cart from localStorage
-            sessionStorage.setItem("orderComplete", "true"); // set flag to ensure cart clears on reload
+            sessionStorage.setItem("orderComplete", "true"); // Set flag to ensure cart clears on reload
             setTimeout(() => {
                 window.location.assign("menu.php");
             }, 2100);
         </script>';
-        
 
     } catch (Exception $ex) {
         mysqli_rollback($connection);
@@ -139,4 +166,4 @@ if (isset($_POST['confirmCheckout'])) {
     }
 }
 ?>
-
+    

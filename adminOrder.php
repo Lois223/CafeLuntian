@@ -58,7 +58,7 @@ include('mycon.php');
         <div class="user-profile">
           <img src="img/profile.png" alt="Profile Image" />
           <div class="user-detail">
-            <h3><?php echo $_SESSION['FName']." ".$_SESSION['LName']; ?></h3>
+          <h3><?php echo $_SESSION['User_FName']." ".$_SESSION['User_LName']; ?></h3>
             <span>Admin</span>
           </div>
         </div>
@@ -80,10 +80,15 @@ include('mycon.php');
       <div class="table-wrapper">
       <?php
       include('mycon.php');
-
+      if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['Order_ID'], $_POST['status'])) {
+        $Order_ID = $_POST['Order_ID'];
+        $status = $_POST['status'];
+        $updateSql = "UPDATE order_items_tbl SET Status='$status' WHERE Order_ID='$Order_ID'";
+        $connection->query($updateSql);
+    }
       $sql = "SELECT 
                 c.Order_ID, c.Customer_Name, c.Contact, c.Email, c.Room_Num, c.Mode_of_Service, c.Time,
-                i.Item_Name, i.Quantity, i.Price, i.Add_Ons
+                i.Item_Name, i.Quantity, i.Price, i.Add_Ons, i.Status
               FROM customer_order_tbl c
               LEFT JOIN order_items_tbl i ON c.Order_ID = i.Order_ID
               ORDER BY c.Order_ID DESC";
@@ -101,10 +106,10 @@ include('mycon.php');
               <td><b>Total</b></td> 
               <td><b>Subtotal</b></td> 
               <td><b>Contact</b></td>
-              <td><b>Email</b></td>
               <td><b>Time</b></td>
               <td><b>Room Num</b></td>
               <td><b>Mode of Service</b></td>
+              <td><b>Status</b></td>
               <td><b>Actions</b></td>
             </tr>";
 
@@ -185,20 +190,29 @@ include('mycon.php');
               echo '<td>' . $row['Quantity'] . '</td>';
               echo '<td>' . number_format($row['Price'], 2) . '</td>';
               echo '<td>' . number_format($addonPrice, 2) . '</td>';
-              echo '<td>' . number_format($itemTotal, 2) . '</td>'; 
+              echo '<td>' . number_format($itemTotal, 2) . '</td>';   
 
               if ($isFirstRow) {
                   echo '<td rowspan="' . $orderRowspan[$Order_ID] . '"><b>' . number_format($orderTotal[$Order_ID], 2) . '</b></td>'; 
                   echo '<td rowspan="' . $orderRowspan[$Order_ID] . '">' . $row['Contact'] . '</td>';
-                  echo '<td rowspan="' . $orderRowspan[$Order_ID] . '">' . $row['Email'] . '</td>';
                   echo '<td rowspan="' . $orderRowspan[$Order_ID] . '">' . $formattedTime . '</td>';
                   echo '<td rowspan="' . $orderRowspan[$Order_ID] . '">' . $roomNumber . '</td>';
                   echo '<td rowspan="' . $orderRowspan[$Order_ID] . '">' . $row['Mode_of_Service'] . '</td>';
+                  echo '<td rowspan="' . $orderRowspan[$Order_ID] . '">' . $row['Status'] . '</td>';
                   echo '<td rowspan="' . $orderRowspan[$Order_ID] . '">
-                          <a class="remove-row-button" href="DeletionQueries.php?act=DeleteOrder&Order_ID=' . urlencode($Order_ID) . '" 
-                          onclick="return confirm(\'Are you sure you want to delete this order?\');">
-                              <i class="fas fa-trash-alt"></i>
-                          </a>
+                          <div style="display: flex; flex-direction: column; gap: 10px;">
+                          <form method="POST" style="display:inline;">
+                                <input type="hidden" name="Order_ID" value="'.$row['Order_ID'].'">
+                                <input type="hidden" name="status" value="confirmed">
+                            <button style="background-color: #4CAF50; color: white; border: none; padding: 10px 10px; cursor: pointer; border-radius: 5px;">Confirm</button>
+                          </form>
+                          <form method="POST" style="display:inline;">
+                                <input type="hidden" name="Order_ID" value="'.$row['Order_ID'].'">
+                                <input type="hidden" name="status" value="canceled">
+                            <button style="background-color: #f44336; color: white; border: none; padding: 10px 10px; cursor: pointer; border-radius: 5px;">Cancel</button>
+                          </form>
+                            </div>
+
                         </td>';
               }
 
@@ -215,7 +229,16 @@ include('mycon.php');
       </div>
     </section>
   </main>
-
+  <script>
+   function updateStatus(Order_ID, status) {
+     const statusElement = document.getElementById(`status-${Order_ID}`);
+     if (status === 'confirmed') {
+       statusElement.innerHTML = '<span class="bg-green-500 text-white px-2 py-1 rounded-md">Confirmed</span>';
+     } else if (status === 'canceled') {
+       statusElement.innerHTML = '<span class="bg-red-500 text-white px-2 py-1 rounded-md">Canceled</span>';
+     }
+   }
+  </script>
   <script src="main.js"></script>
 </body>
 </html>

@@ -52,7 +52,7 @@
         <div class="user-profile">
           <img src="img/profile.png" alt="Profile Image" />
           <div class="user-detail">
-            <h3><?php echo $_SESSION['FName']." ".$_SESSION['LName']; ?></h3>
+          <h3><?php echo $_SESSION['User_FName']." ".$_SESSION['User_LName']; ?></h3>
             <span>Admin</span>
           </div>
         </div>
@@ -69,10 +69,10 @@
                 <div class="admin-profile">
                     <div class="profile-info">
                         <div class="admin-details">
-                            <p><strong>Admin ID:</strong><span id="AdminID">xxx</span></p>
-                            <p><strong>Name:</strong> <span id="Name">xxx</span></p>
-                            <p><strong>Email:</strong> <span id="Email">xxx</span></p>
-                            <p><strong>Contact No:</strong> <span id="Contact">xxx</span></p>
+                            <p><strong>Admin ID:</strong><span id="AdminID"><?php echo $_SESSION['Admin_ID']?></span></p>
+                            <p><strong>Name:</strong> <span id="Name"><?php echo $_SESSION['User_FName'] . ' ' . $_SESSION['User_LName']; ?></span></p>
+                            <p><strong>Email:</strong> <span id="Email"><?php echo $_SESSION['Email'] ?></span></p>
+                            <p><strong>Contact No:</strong> <span id="Contact"><?php echo $_SESSION ['Contact_Num']?></span></p>
                         </div>
                     </div>
                 </div>
