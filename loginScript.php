@@ -20,7 +20,7 @@ if (isset($_POST['log_user'])) {
                 $_SESSION['User_LName'] = $row['User_LName'];
                 $_SESSION['Contact_Num'] = $row['Contact_Num'];
                 $_SESSION['Email'] = $Email;
-                echo '<script>window.location.assign("index.php");</script>';
+                echo '<script>window.location.assign("adminDashboard.php");</script>';
                 } 
                 exit;
             } else {
