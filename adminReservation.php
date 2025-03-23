@@ -191,6 +191,29 @@
           statusElement.innerHTML = '<span class="bg-red-500 text-white px-2 py-1 rounded-md">Canceled</span>';
         }
       }
+
+      //toggle sidebar
+        const sidebar = document.querySelector('.sidebar');
+        const toggleBtn = document.querySelector('.sidebar-toggle');
+
+        toggleBtn.addEventListener('click', (e) => {
+            e.stopPropagation(); // prevent immediate closing
+            sidebar.classList.add('show-sidebar');
+            toggleBtn.style.display = 'none'; // hide toggle btn
+        });
+
+        // close sidebar when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!sidebar.contains(e.target)) {
+                sidebar.classList.remove('show-sidebar');
+                toggleBtn.style.display = 'block'; // show toggle btn
+            }
+        });
+
+        // prevent closing when clicking inside the sidebar
+        sidebar.addEventListener('click', (e) => {
+            e.stopPropagation();
+        });
    </script>
 </body>
 </html>

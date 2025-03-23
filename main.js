@@ -1,26 +1,3 @@
-//toggle sidebar
-    const sidebar = document.querySelector('.sidebar');
-    const toggleBtn = document.querySelector('.sidebar-toggle');
-
-    toggleBtn.addEventListener('click', (e) => {
-        e.stopPropagation(); // prevent immediate closing
-        sidebar.classList.add('show-sidebar');
-        toggleBtn.style.display = 'none'; // hide toggle btn
-    });
-
-    // close sidebar when clicking outside
-    document.addEventListener('click', (e) => {
-        if (!sidebar.contains(e.target)) {
-            sidebar.classList.remove('show-sidebar');
-            toggleBtn.style.display = 'block'; // show toggle btn
-        }
-    });
-
-    // prevent closing when clicking inside the sidebar
-    sidebar.addEventListener('click', (e) => {
-        e.stopPropagation();
-    });
-
 // sidebar (mobile)
 document.addEventListener("DOMContentLoaded", function () {
     const menuToggle = document.getElementById("menu-toggle");

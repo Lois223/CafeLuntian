@@ -104,7 +104,15 @@ $showSuccessMessage = isset($_GET['success']) && $_GET['success'] == 1;
                 </div>
 
                 <div class="form-group">
-                    <label for="receipt">Upload Your Receipt:</label> <br>
+                    <label for="paymentMethod">Select Mode of Payment:</label>
+                    <select id="paymentMethod" name="Payment_Method" onchange="toggleGcashFields()">
+                        <option value="GCash" selected>GCash (Full Payment)</option>
+                        <option value="Cash">Cash (50% GCash Downpayment, 50% upon Pickup/Delivery)</option>
+                    </select>
+                </div>
+
+                <div class="form-group" id="gcashReceiptField">
+                    <label for="receipt">Upload Your GCash Receipt:</label> <br>
                     <input type="file" name="Receipt" id="receipt" accept="image/*" required>
                 </div>
 
