@@ -21,6 +21,11 @@
     </style>
   </head>
   <body>
+
+    <button id="sidebarToggle" class="sidebar-toggle">
+      <span class="material-symbols-outlined">menu</span>
+    </button>
+
     <aside class="sidebar">
       <div class="sidebar-header">
         <img src="img/logo3.png" alt="logo" />
@@ -172,22 +177,20 @@
 
                     echo "</table>";
                     ?>
-
-
-
             </div>
         </section>
     </main>
-    <script>
-   function updateStatus(reservationId, status) {
-     const statusElement = document.getElementById(`status-${reservationId}`);
-     if (status === 'confirmed') {
-       statusElement.innerHTML = '<span class="bg-green-500 text-white px-2 py-1 rounded-md">Confirmed</span>';
-     } else if (status === 'canceled') {
-       statusElement.innerHTML = '<span class="bg-red-500 text-white px-2 py-1 rounded-md">Canceled</span>';
-     }
-   }
-  </script>
+
     <script src="main.js"></script>
+    <script>
+      function updateStatus(reservationId, status) {
+        const statusElement = document.getElementById(`status-${reservationId}`);
+        if (status === 'confirmed') {
+          statusElement.innerHTML = '<span class="bg-green-500 text-white px-2 py-1 rounded-md">Confirmed</span>';
+        } else if (status === 'canceled') {
+          statusElement.innerHTML = '<span class="bg-red-500 text-white px-2 py-1 rounded-md">Canceled</span>';
+        }
+      }
+   </script>
 </body>
 </html>
