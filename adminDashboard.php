@@ -108,6 +108,7 @@
       </header>
 
       <div class="grid grid-cols-1 gap-6 mt-6 md:grid-cols-2 lg:grid-cols-4">
+      <a href="adminReservation.php">
         <div class="p-6 bg-gradient-to-r from-[#3b7f68] to-[#58a289] rounded-lg shadow-md text-white transition-transform duration-300 hover:scale-105">
           <div class="flex items-center justify-between">
             <div>
@@ -130,10 +131,12 @@
             </div>
             <i class="fas fa-coins text-4xl"></i>
           </div>
+        </a>
         </div>
 
         <div class="p-6 bg-gradient-to-r from-[#3b7f68] to-[#58a289] rounded-lg shadow-md text-white transition-transform duration-300 hover:scale-105">
-          <div class="flex items-center justify-between">
+        <a href="adminOrder.php">
+        <div class="flex items-center justify-between">
             <div>
               <h2 class="text-4xl font-bold">
                 <?php echo "<p>$totalOrders</strong></p>"; ?>
@@ -142,13 +145,14 @@
             </div>
             <i class="fas fa-shopping-cart text-4xl"></i>
           </div>
+        </a>
        </div>
 
       <div class="p-6 bg-gradient-to-r from-[#3b7f68] to-[#58a289] rounded-lg shadow-md text-white transition-transform duration-300 hover:scale-105">
         <div class="flex items-center justify-between">
           <div>
             <h2 class="text-4xl font-bold">
-            872
+              <?php echo "<p>$totalCustomersCount</strong></p>"; ?>
             </h2>
             <p>Total Customers</p>
           </div>

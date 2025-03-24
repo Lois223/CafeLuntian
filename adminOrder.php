@@ -86,6 +86,15 @@ include('mycon.php');
         $updateSql = "UPDATE order_items_tbl SET Status='$status' WHERE Order_ID='$Order_ID'";
         $connection->query($updateSql);
     }
+    $limit = 10;
+    $page = isset($_GET['page']) ? intval($_GET['page']) : 1;
+    $offset = ($page - 1) * $limit;
+    
+    // Count total records
+    $countQuery = "SELECT COUNT(DISTINCT c.Order_ID) AS total_orders FROM customer_order_tbl c";
+    $countResult = $connection->query($countQuery);
+    $totalOrders = $countResult->fetch_assoc()['total_orders'];
+    $totalPages = ceil($totalOrders / $limit);
       $sql = "SELECT 
                 c.Order_ID, c.Customer_Name, c.Contact, c.Email, c.Room_Num, c.Mode_of_Service, c.Time,
                 i.Item_Name, i.Quantity, i.Price, i.Add_Ons, i.Status
@@ -208,7 +217,7 @@ include('mycon.php');
                           </form>
                           <form method="POST" style="display:inline;">
                                 <input type="hidden" name="Order_ID" value="'.$row['Order_ID'].'">
-                                <input type="hidden" name="status" value="canceled">
+                                <input type="hidden" name="status" value="cancelled">
                             <button style="background-color: #f44336; color: white; border: none; padding: 10px 10px; cursor: pointer; border-radius: 5px;">Cancel</button>
                           </form>
                             </div>
@@ -225,6 +234,48 @@ include('mycon.php');
       }
 
       echo "</table>";
+
+      // Pagination Links
+echo "<div style='text-align: center; margin-top: 20px;'>";
+
+// First Button
+if ($page > 1) {
+    echo "<a href='?page=1' style='padding: 8px 12px; background-color: #4CAF50; color: #fff; border-radius: 5px; text-decoration: none; margin-right: 5px;'>First</a>";
+} else {
+    echo "<button disabled style='padding: 8px 12px; background-color: #ccc; color: #666; border-radius: 5px; margin-right: 5px;'>First</button>";
+}
+
+// Previous Button
+if ($page > 1) {
+    echo "<a href='?page=" . ($page - 1) . "' style='padding: 8px 12px; background-color: #4CAF50; color: #fff; border-radius: 5px; text-decoration: none; margin-right: 5px;'>Previous</a>";
+} else {
+    echo "<button disabled style='padding: 8px 12px; background-color: #ccc; color: #666; border-radius: 5px; margin-right: 5px;'>Previous</button>";
+}
+
+// Page Numbers
+for ($i = 1; $i <= $totalPages; $i++) {
+    if ($i == $page) {
+        echo "<button style='padding: 8px 12px; background-color: #4CAF50; color: #fff; border-radius: 5px; margin: 0 3px;' disabled>$i</button>";
+    } else {
+        echo "<a href='?page=$i' style='padding: 8px 12px; background-color: #4CAF50; color: #fff; border-radius: 5px; text-decoration: none; margin: 0 3px;'>$i</a>";
+    }
+}
+
+// Next Button
+if ($page < $totalPages) {
+    echo "<a href='?page=" . ($page + 1) . "' style='padding: 8px 12px; background-color: #4CAF50; color: #fff; border-radius: 5px; text-decoration: none; margin-left: 5px;'>Next</a>";
+} else {
+    echo "<button disabled style='padding: 8px 12px; background-color: #ccc; color: #666; border-radius: 5px; margin-left: 5px;'>Next</button>";
+}
+
+// Last Button
+if ($page < $totalPages) {
+    echo "<a href='?page=$totalPages' style='padding: 8px 12px; background-color: #4CAF50; color: #fff; border-radius: 5px; text-decoration: none; margin-left: 5px;'>Last</a>";
+} else {
+    echo "<button disabled style='padding: 8px 12px; background-color: #ccc; color: #666; border-radius: 5px; margin-left: 5px;'>Last</button>";
+}
+
+echo "</div>";
       ?>
       </div>
     </section>
@@ -234,8 +285,8 @@ include('mycon.php');
      const statusElement = document.getElementById(`status-${Order_ID}`);
      if (status === 'confirmed') {
        statusElement.innerHTML = '<span class="bg-green-500 text-white px-2 py-1 rounded-md">Confirmed</span>';
-     } else if (status === 'canceled') {
-       statusElement.innerHTML = '<span class="bg-red-500 text-white px-2 py-1 rounded-md">Canceled</span>';
+     } else if (status === 'cancelled') {
+       statusElement.innerHTML = '<span class="bg-red-500 text-white px-2 py-1 rounded-md">Cancelled</span>';
      }
    }
   </script>

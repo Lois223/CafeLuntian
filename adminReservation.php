@@ -161,7 +161,7 @@
                                     </form>
                                     <form method="POST" style="display:inline;">
                                       <input type="hidden" name="reservation_id" value="'.$row['Reservation_ID'].'">
-                                      <input type="hidden" name="status" value="canceled">
+                                      <input type="hidden" name="status" value="cancelled">
                                       <button style="background-color: #f44336; color: white; border: none; padding: 10px 10px; cursor: pointer; border-radius: 5px;">Cancel</button>
                                     </form>
                                 </div>
@@ -187,8 +187,8 @@
         const statusElement = document.getElementById(`status-${reservationId}`);
         if (status === 'confirmed') {
           statusElement.innerHTML = '<span class="bg-green-500 text-white px-2 py-1 rounded-md">Confirmed</span>';
-        } else if (status === 'canceled') {
-          statusElement.innerHTML = '<span class="bg-red-500 text-white px-2 py-1 rounded-md">Canceled</span>';
+        } else if (status === 'cancelled') {
+          statusElement.innerHTML = '<span class="bg-red-500 text-white px-2 py-1 rounded-md">Cancelled</span>';
         }
       }
 

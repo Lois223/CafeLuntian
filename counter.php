@@ -24,8 +24,25 @@ $pendingOrdersData = mysqli_fetch_assoc($pendingOrdersResult);
 $totalPendingOrders = $pendingOrdersData['pending_orders'];
 
 // Count Pending Reservations
-$cancelOrdersQuery = "SELECT COUNT(*) AS canceled_orders FROM order_items_tbl WHERE Status = 'canceled'";
+$cancelOrdersQuery = "SELECT COUNT(*) AS canceled_orders FROM order_items_tbl WHERE Status = 'cancelled'";
 $cancelOrdersResult = mysqli_query($connection, $cancelOrdersQuery);
 $cancelOrdersData = mysqli_fetch_assoc($cancelOrdersResult);
 $totalCanceledOrders = $cancelOrdersData['canceled_orders'];
+
+// Query to count unique customers
+$countCustomersquery = "
+        SELECT COUNT(*) AS total_customers FROM (
+        SELECT Reservation_ID AS customer_id FROM table_reservation_tbl
+        UNION
+        SELECT Order_ID AS customer_id FROM order_items_tbl
+    ) AS combined_customers
+";
+$countCustomers = mysqli_query($connection, $countCustomersquery);
+
+if ($countCustomers) {
+    $countCustomersData = mysqli_fetch_assoc($countCustomers);
+    $totalCustomersCount = $countCustomersData['total_customers'];
+} else {
+    $totalCustomersCount = 0; // Fallback if query fails
+}
 ?>
