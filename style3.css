@@ -434,6 +434,11 @@ table td {
     font-size: 1.25rem;
   }
 
+  .action-form {
+    flex-direction: column !important;
+    align-items: stretch;
+  }
+
 }
 
 

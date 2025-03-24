@@ -296,11 +296,13 @@ searchInput.addEventListener("input", function () {
       // find user ID and name 
       const userIdElem = row.getElementsByClassName("user-id")[0];
       const userNameElem = row.getElementsByClassName("user-name")[0];
+      const orderIdElem = row.getElementsByClassName("order-id")[0];
 
       const userId = userIdElem ? userIdElem.innerText.toLowerCase() : "";
       const userName = userNameElem ? userNameElem.innerText.toLowerCase() : "";
+      const orderId = orderIdElem ? orderIdElem.innerText.toLowerCase() : "";
 
-      if (userId.includes(searchTerm) || userName.includes(searchTerm)) {
+      if (userId.includes(searchTerm) || userName.includes(searchTerm) || orderId.includes(searchTerm)) {
           row.style.display = ""; // show row if it matches
       } else {
           row.style.display = "none"; // hide row if it doesn't match

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 24, 2025 at 01:17 AM
+-- Generation Time: Mar 24, 2025 at 03:35 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -84,7 +84,10 @@ INSERT INTO `customer_order_tbl` (`Order_ID`, `Customer_Name`, `Contact`, `Email
 (202503009, 'Jewel Marie Ordanza', '23232432423', '2120465@ub.edu.ph', 0, 'Pickup', '13:10:00', NULL, 'pending', '', 0.00),
 (202503010, 'Jewel Marie Ordanza', '09551826420', '2120465@ub.edu.ph', 205, 'Delivery', '10:20:00', NULL, 'pending', '', 0.00),
 (202503011, 'Jewel Marie Ordanza', '09551826420', 'jewel@gmail.com', 0, 'Pickup', '21:50:00', NULL, 'pending', '', 0.00),
-(202503012, 'Jewel Marie Ordanza', '09234123232', 'ju@gmail.com', 0, 'Pickup', '21:10:00', NULL, 'pending', '', 0.00);
+(202503012, 'Jewel Marie Ordanza', '09234123232', 'ju@gmail.com', 0, 'Pickup', '21:10:00', NULL, 'pending', '', 0.00),
+(202503015, 'shane', '03214956647', 'Snape@gmail.com', 0, 'Pickup', '14:54:00', NULL, 'pending', '', 0.00),
+(202503016, 'hotel', '02314569874', 'Neville@gmail.com', 0, 'Pickup', '14:50:00', NULL, 'pending', '', 0.00),
+(202503017, 'test', '02314569874', 'Ron@gmail.com', 0, 'Pickup', '15:08:00', NULL, 'pending', '', 0.00);
 
 -- --------------------------------------------------------
 
@@ -110,9 +113,9 @@ CREATE TABLE `order_items_tbl` (
 --
 
 INSERT INTO `order_items_tbl` (`Item_ID`, `Order_ID`, `Item_Name`, `Quantity`, `Price`, `Subtotal`, `Created_At`, `Add_Ons`, `Add_Ons_Price`, `Status`) VALUES
-(4, 202503001, 'Caramel Macchiato', 1, 99.00, 99.00, '2025-03-13 17:03:30', NULL, NULL, 'confirmed'),
-(5, 202503001, 'Salted Caramel', 2, 99.00, 198.00, '2025-03-13 17:03:30', NULL, NULL, 'confirmed'),
-(6, 202503001, 'Americano', 1, 129.00, 129.00, '2025-03-13 17:03:30', NULL, NULL, 'confirmed'),
+(4, 202503001, 'Caramel Macchiato', 1, 99.00, 99.00, '2025-03-13 17:03:30', NULL, NULL, 'cancelled'),
+(5, 202503001, 'Salted Caramel', 2, 99.00, 198.00, '2025-03-13 17:03:30', NULL, NULL, 'cancelled'),
+(6, 202503001, 'Americano', 1, 129.00, 129.00, '2025-03-13 17:03:30', NULL, NULL, 'cancelled'),
 (7, 202503002, 'Java Chip', 2, 149.00, 298.00, '2025-03-13 17:04:44', NULL, NULL, 'cancelled'),
 (8, 202503002, 'Dark Chocolate', 1, 129.00, 129.00, '2025-03-13 17:04:44', NULL, NULL, 'cancelled'),
 (9, 202503003, 'Cappuccino', 1, 99.00, 99.00, '2025-03-13 17:05:31', NULL, NULL, 'confirmed'),
@@ -127,7 +130,11 @@ INSERT INTO `order_items_tbl` (`Item_ID`, `Order_ID`, `Item_Name`, `Quantity`, `
 (30, 202503010, 'Americano', 1, 99.00, 99.00, '2025-03-23 11:19:08', NULL, 0.00, 'cancelled'),
 (31, 202503010, 'Salted Caramel', 1, 99.00, 99.00, '2025-03-23 11:19:08', NULL, 0.00, 'cancelled'),
 (32, 202503011, 'Salted Caramel', 1, 99.00, 99.00, '2025-03-23 13:46:47', NULL, 0.00, 'pending'),
-(33, 202503012, 'Americano', 1, 129.00, 129.00, '2025-03-23 13:47:54', NULL, 0.00, 'pending');
+(33, 202503012, 'Americano', 1, 129.00, 129.00, '2025-03-23 13:47:54', NULL, 0.00, 'pending'),
+(37, 202503015, 'Chocolate', 1, 99.00, 99.00, '2025-03-24 06:55:11', NULL, 0.00, 'confirmed'),
+(38, 202503015, 'Cafe Mocha', 1, 129.00, 129.00, '2025-03-24 06:55:11', NULL, 0.00, 'confirmed'),
+(41, 202503016, 'Spanish Latte', 1, 99.00, 99.00, '2025-03-24 12:50:26', NULL, 0.00, 'confirmed'),
+(42, 202503017, 'Cappuccino', 1, 99.00, 99.00, '2025-03-24 13:08:46', NULL, 0.00, 'confirmed');
 
 -- --------------------------------------------------------
 
@@ -164,13 +171,21 @@ INSERT INTO `table_reservation_tbl` (`Reservation_ID`, `Full_Name`, `Reservation
 CREATE TABLE `transactions_tbl` (
   `Transaction_ID` int(11) NOT NULL,
   `Order_ID` int(11) NOT NULL,
-  `Order_Date` datetime NOT NULL,
-  `Contact_Num` bigint(20) NOT NULL,
-  `Amount` varchar(255) NOT NULL,
-  `Receipt` int(11) NOT NULL,
-  `Status` int(11) NOT NULL,
-  `Payment_Date` datetime NOT NULL
+  `Customer_Name` varchar(255) NOT NULL,
+  `Date_Time` timestamp NOT NULL DEFAULT current_timestamp(),
+  `Amount` decimal(10,2) NOT NULL,
+  `Status` varchar(30) NOT NULL,
+  `Receipt_Path` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `transactions_tbl`
+--
+
+INSERT INTO `transactions_tbl` (`Transaction_ID`, `Order_ID`, `Customer_Name`, `Date_Time`, `Amount`, `Status`, `Receipt_Path`) VALUES
+(1, 202503017, 'test', '2025-03-24 13:16:22', 99.00, 'pending', ''),
+(2, 202503016, 'hotel', '2025-03-24 13:33:41', 99.00, 'pending', ''),
+(3, 202503015, 'shane', '2025-03-24 13:36:56', 228.00, 'pending', '');
 
 --
 -- Indexes for dumped tables
@@ -205,7 +220,8 @@ ALTER TABLE `table_reservation_tbl`
 -- Indexes for table `transactions_tbl`
 --
 ALTER TABLE `transactions_tbl`
-  ADD PRIMARY KEY (`Transaction_ID`);
+  ADD PRIMARY KEY (`Transaction_ID`),
+  ADD KEY `Order` (`Order_ID`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -221,19 +237,19 @@ ALTER TABLE `admin_tbl`
 -- AUTO_INCREMENT for table `customer_order_tbl`
 --
 ALTER TABLE `customer_order_tbl`
-  MODIFY `Order_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=202503013;
+  MODIFY `Order_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=202503018;
 
 --
 -- AUTO_INCREMENT for table `order_items_tbl`
 --
 ALTER TABLE `order_items_tbl`
-  MODIFY `Item_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
+  MODIFY `Item_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
 
 --
 -- AUTO_INCREMENT for table `transactions_tbl`
 --
 ALTER TABLE `transactions_tbl`
-  MODIFY `Transaction_ID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `Transaction_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- Constraints for dumped tables
@@ -244,6 +260,13 @@ ALTER TABLE `transactions_tbl`
 --
 ALTER TABLE `order_items_tbl`
   ADD CONSTRAINT `order_items_tbl_ibfk_1` FOREIGN KEY (`Order_ID`) REFERENCES `customer_order_tbl` (`Order_ID`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `transactions_tbl`
+--
+ALTER TABLE `transactions_tbl`
+  ADD CONSTRAINT `fk_transaction_order` FOREIGN KEY (`Order_ID`) REFERENCES `customer_order_tbl` (`Order_ID`) ON DELETE CASCADE,
+  ADD CONSTRAINT `fk_transactions_order` FOREIGN KEY (`Order_ID`) REFERENCES `order_items_tbl` (`Order_ID`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

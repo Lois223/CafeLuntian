@@ -46,6 +46,9 @@
         <li>
           <a href="adminReservation.php" class="active"><span class="material-symbols-outlined">book</span>Reservation</a>
         </li>
+        <li>
+          <a href="adminTransaction.php" class="active"><span class="material-symbols-outlined">receipt_long</span>Transaction</a>
+        </li>
 
         <h4>
           <span>Account</span>
@@ -153,18 +156,11 @@
 
                             if ($isFirstRow) {
                                 echo '<td rowspan="' . $reservationRowspan[$Reservation_ID] . '">
-                                <div style="display: flex; flex-direction: column; gap: 10px;">        
-                                    <form method="POST" style="display:inline;">
-                                      <input type="hidden" name="reservation_id" value="'.$row['Reservation_ID'].'">
-                                      <input type="hidden" name="status" value="confirmed">
-                                      <button style="background-color: #4CAF50; color: white; border: none; padding: 10px 10px; cursor: pointer; border-radius: 5px;">Confirm</button>
-                                    </form>
-                                    <form method="POST" style="display:inline;">
-                                      <input type="hidden" name="reservation_id" value="'.$row['Reservation_ID'].'">
-                                      <input type="hidden" name="status" value="cancelled">
-                                      <button style="background-color: #f44336; color: white; border: none; padding: 10px 10px; cursor: pointer; border-radius: 5px;">Cancel</button>
-                                    </form>
-                                </div>
+                                  <form method="POST" style="display: flex; flex-direction: column; gap: 5px; align-items: center;">
+                                        <input type="hidden" name="reservation_id" value="' . $Reservation_ID . '">
+                                        <button type="submit" name="status" value="confirmed" style="background-color:#177353; color: white; border: none; padding: 10px 10px; cursor: pointer; border-radius: 5px; width: 80px;">Confirm</button>
+                                        <button type="submit" name="status" value="cancelled" style="background-color:#ac3830; color: white; border: none; padding: 10px 10px; cursor: pointer; border-radius: 5px; width: 80px;">Cancel</button>
+                                  </form>
                               </td>';
                             }
 
