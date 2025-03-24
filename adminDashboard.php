@@ -17,6 +17,28 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
     <script src="https://kit.fontawesome.com/1e3d5daa34.js" crossorigin="anonymous"></script>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      //filtering in recent activity
+      document.addEventListener('DOMContentLoaded', function () {
+            const filterButtons = document.querySelectorAll('.filter-button');
+            const activities = document.querySelectorAll('.activity-item');
+
+            filterButtons.forEach(button => {
+                button.addEventListener('click', function () {
+                    const filter = this.dataset.filter;
+                    activities.forEach(activity => {
+                        if (filter === 'all' || activity.classList.contains(filter)) {
+                            activity.classList.remove('hidden');
+                        } else {
+                            activity.classList.add('hidden');
+                        }
+                    });
+                });
+            });
+        })
+        </script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
   </head>
   <body>
     <div class="nav__toggle" id="nav-toggle">
@@ -73,7 +95,6 @@
     </aside>
 
     <main class="main">
-
     <div class="flex-1 p-6">
       <header class="flex items-center justify-between">
         <div>
@@ -164,7 +185,7 @@
     <div class="grid grid-cols-1 md:grid-cols-2 gap-0 mt-6">
       <div class="bg-white rounded-lg shadow-lg p-6 w-full max-w-[95%]">
       <h2 class="text-xl font-semibold mb-2 text-[#356D59]">Orders Summary</h2>
-      <p class="text-gray-500 mb-4">Lorem ipsum dolor sit amet, consectetur</p>
+      <p class="text-gray-500 mb-4">Stay updated with your cafe’s latest orders and track progress.</p>
       <div class="flex justify-between items-center mb-6">
         <div class="flex space-x-4">
         <button class="text-green-500 border-b-2 border-green-500 pb-1" id="monthly-tab">
@@ -181,7 +202,7 @@
       <div class="tab-content" id="monthly-content">
         <div class="flex flex-col items-center mb-6">
         <p class="text-gray-500 text-center mb-4">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+        View today's order trends and details to manage your cafe efficiently.
         </p>
         <button class="bg-green-100 text-green-500 hover:text-[#356D59] py-2 px-4 rounded-full transition-transform duration-300 hover:scale-105">
         <a href="adminOrder.php" >See More Details</a>
@@ -296,45 +317,63 @@
    <p class="text-gray-500 mb-4">
     Lorem ipsum dolor sit amet, consectetur
    </p>
-   <div class="flex justify-between items-center mb-6">
-    <div class="flex space-x-4">
-                <button id="allStatusBtn" class="bg-green-100 text-green-600 px-4 py-2 rounded-full flex items-center transition-transform duration-300 hover:scale-105">
-                    <i class="fas fa-filter mr-2"></i> All Status
-                </button>
-                <button id="todayBtn" class="bg-green-100 text-green-600 px-4 py-2 rounded-full transition-transform duration-300 hover:scale-105">Today</button>
-            </div>
+        <div class="mb-4 flex space-x-2">
+            <button class="filter-button bg-green-500 text-white px-3 py-1 rounded" data-filter="all">All</button>
+            <button class="filter-button bg-green-500 text-white px-3 py-1 rounded" data-filter="renewed">Orders</button>
+            <button class="filter-button bg-green-500 text-white px-3 py-1 rounded" data-filter="closed">Transaction</button>
+            <button class="filter-button bg-green-500 text-white px-3 py-1 rounded" data-filter="opened">Status</button>
         </div>
-        <div class="overflow-x-auto">
-            <table class="min-w-full bg-white">
-                <thead>
-                    <tr class="w-full bg-gray-100 text-gray-600 uppercase text-sm leading-normal">
-                        <th class="py-3 px-6 text-left">Order ID</th>
-                        <th class="py-3 px-6 text-left">Date</th>
-                        <th class="py-3 px-6 text-left">Customer Name</th>
-                        <th class="py-3 px-6 text-left">Location</th>
-                        <th class="py-3 px-6 text-left">Amount</th>
-                        <th class="py-3 px-6 text-left">Status Order</th>
-                        <th class="py-3 px-6 text-left"></th>
-                    </tr>
-                </thead>
-                <tbody id="orderTableBody" class="text-gray-600 text-sm font-light">
-                    <!-- Rows will be inserted here by JavaScript -->
-                </tbody>
-            </table>
-        </div>
-        <div class="flex justify-between items-center mt-4">
-            <div id="entriesInfo" class="text-gray-600">Showing 1 to 4 of 11 entries</div>
-            <div class="flex space-x-2">
-                <button id="prevBtn" class="bg-green-100 text-green-600 px-4 py-2 rounded-full transition-transform duration-300 hover:scale-105transition-transform duration-300 hover:scale-90 hover:text-[#356D59]">Previous</button>
-                <button id="nextBtn" class="bg-green-100 text-green-600 px-4 py-2 rounded-full transition-transform duration-300 hover:scale-90 hover:text-[#356D59]">Next</button>
-            </div>
-        </div>
-        <div class="mt-4 text-center">
-            <a href="#" class="text-green-600 hover:text-red-600">See More Details</a>
-        </div>
-    </div>
+        <div class="space-y-4 overflow-y-auto max-h-80">
+        <?php
+        // Database connection
+        $server = 'localhost';
+        $user = 'root';
+        $pass = '';
+        $db = 'cafeluntiandata';
 
+        mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
 
+        try {
+            $conn = mysqli_connect($server, $user, $pass, $db);
+        } catch (Exception $ex) {
+            echo 'Error: ' . $ex->getMessage();
+            exit();
+        }
+
+        // Fetch recent activity data 
+        $sql = "SELECT co.Order_ID AS Reference_ID, 'Order' AS Activity_Type, co.Customer_Name, MIN(oi.Created_At) AS Timestamp 
+                FROM customer_order_tbl co
+                JOIN order_items_tbl oi ON co.Order_ID = oi.Order_ID
+                GROUP BY co.Order_ID, co.Customer_Name
+                ORDER BY Timestamp DESC 
+                LIMIT 25";
+
+        $result = $conn->query($sql);
+
+        // Display recent activity
+        if ($result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                $description = "{$row['Customer_Name']} placed an Order (ID: {$row['Reference_ID']})";
+                echo "<div class='activity-item renewed flex items-start space-x-3'>
+                        <div class='flex-shrink-0'>
+                            <div class=' text-white rounded-full p-2'>
+                              <img src='img/check.png' alt='Checkout Icon' class='w-6 h-6' />
+                          </div>
+                        </div>
+                        <div>
+                            <p class='text-sm'>{$description}</p>
+                            <p class='text-xs text-gray-500'>{$row['Timestamp']}</p>
+                        </div>
+                      </div>";
+            }
+        } else {
+            echo "<p>No recent activity available.</p>";
+        }
+
+        $conn->close();
+        ?>
+                </div>
+        </div>
     
     </main>
 

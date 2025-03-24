@@ -96,11 +96,13 @@ include('mycon.php');
     $totalOrders = $countResult->fetch_assoc()['total_orders'];
     $totalPages = ceil($totalOrders / $limit);
       $sql = "SELECT 
-                c.Order_ID, c.Customer_Name, c.Contact, c.Email, c.Room_Num, c.Mode_of_Service, c.Time,
-                i.Item_Name, i.Quantity, i.Price, i.Add_Ons, i.Status
-              FROM customer_order_tbl c
-              LEFT JOIN order_items_tbl i ON c.Order_ID = i.Order_ID
-              ORDER BY c.Order_ID DESC";
+      c.Order_ID, c.Customer_Name, c.Contact, c.Email, c.Room_Num, c.Mode_of_Service, c.Time,
+      i.Item_Name, i.Quantity, i.Price, i.Add_Ons, i.Status
+      FROM customer_order_tbl c
+      LEFT JOIN order_items_tbl i ON c.Order_ID = i.Order_ID
+      
+      ORDER BY c.Order_ID DESC
+      LIMIT $limit OFFSET $offset";
 
       $result = $connection->query($sql);
 
