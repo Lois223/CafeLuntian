@@ -41,9 +41,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
   </head>
   <body>
-    <div class="nav__toggle" id="nav-toggle">
-      <i class="uil uil-bars"></i>
-   </div>
+ 
     <aside class="sidebar" id="sidebar">
       <nav class="nav">
         <div class="sidebar-header">
@@ -64,6 +62,9 @@
           </li>
           <li>
             <a href="adminReservation.php"><span class="material-symbols-outlined">book</span>Reservation</a>
+          </li>
+          <li>
+            <a href="adminTransaction.php" class="active"><span class="material-symbols-outlined">receipt_long</span>Transaction</a>
           </li>
   
           <h4>
@@ -88,9 +89,7 @@
           </div>
         </div>
   
-        <div class="nav__close" id="nav-close">
-          <i class="uil uil-times"></i>
-        </div>
+  
       </nav>
     </aside>
 

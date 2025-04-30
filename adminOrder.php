@@ -86,138 +86,159 @@ include('mycon.php');
       <h1>Search Results</h1><hr>
       <div class="table-wrapper">
       <?php
-          include('mycon.php');
-          if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['Order_ID'], $_POST['status'])) {
-              $Order_ID = $_POST['Order_ID'];
-              $status = $_POST['status'];
-              
-              // Update order status
-              $updateSql = "UPDATE order_items_tbl SET Status='$status' WHERE Order_ID='$Order_ID'";
-              $connection->query($updateSql);
-              
-              // If confirmed, check and insert transaction
-              if ($status === 'confirmed') {
-                  $checkTransaction = "SELECT * FROM transactions_tbl WHERE Order_ID='$Order_ID'";
-                  $transactionResult = $connection->query($checkTransaction);
+        include('mycon.php');
 
-                  if ($transactionResult->num_rows == 0) {
-                      $amountQuery = "SELECT SUM((Price + 
-                                          CASE 
-                                              WHEN LOWER(Add_Ons) LIKE '%coffee%' THEN 10 
-                                              WHEN LOWER(Add_Ons) LIKE '%alcohol%' THEN 50 
-                                              ELSE 0 
-                                          END) * Quantity) AS total_amount
-                                          FROM order_items_tbl WHERE Order_ID='$Order_ID'";
-                      
-                      $amountResult = $connection->query($amountQuery);
-                      $amountRow = $amountResult->fetch_assoc();
-                      $totalAmount = $amountRow['total_amount'];
-                      
-                      $customerQuery = "SELECT Customer_Name FROM customer_order_tbl WHERE Order_ID='$Order_ID'";
-                      $customerResult = $connection->query($customerQuery);
-                      $customerRow = $customerResult->fetch_assoc();
-                      $customerName = $customerRow['Customer_Name'];
-                      
-                      $insertTransaction = "INSERT INTO transactions_tbl (Order_ID, Customer_Name, Date_Time, Amount, Status)
-                                            VALUES ('$Order_ID', '$customerName', NOW(), '$totalAmount', 'pending')";
-                      $connection->query($insertTransaction);
-                  }
-              }
-          }
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['Order_ID'], $_POST['status'])) {
+            $Order_ID = $_POST['Order_ID'];
+            $status = $_POST['status'];
 
-          $limit = 10;
-          $page = isset($_GET['page']) ? intval($_GET['page']) : 1;
-          $offset = ($page - 1) * $limit;
+            // Update order status
+            $stmt = $connection->prepare("UPDATE order_items_tbl SET Status=? WHERE Order_ID=?");
+            $stmt->bind_param("ss", $status, $Order_ID);
+            $stmt->execute();
 
-          $countQuery = "SELECT COUNT(DISTINCT c.Order_ID) AS total_orders FROM customer_order_tbl c";
-          $countResult = $connection->query($countQuery);
-          $totalOrders = $countResult->fetch_assoc()['total_orders'];
-          $totalPages = ceil($totalOrders / $limit);
+            // If confirmed, add to transactions if not already there
+            if ($status === 'confirmed') {
+                $stmt = $connection->prepare("SELECT 1 FROM transactions_tbl WHERE Order_ID=?");
+                $stmt->bind_param("s", $Order_ID);
+                $stmt->execute();
+                $stmt->store_result();
 
-          $sql = "SELECT c.Order_ID, c.Customer_Name, c.Contact, c.Email, c.Room_Num, c.Mode_of_Service, c.Time,
-                          i.Item_Name, i.Quantity, i.Price, i.Add_Ons, i.Status
-                  FROM customer_order_tbl c
-                  LEFT JOIN order_items_tbl i ON c.Order_ID = i.Order_ID
-                  ORDER BY c.Order_ID DESC";
+                if ($stmt->num_rows === 0) {
+                    // Calculate total amount
+                    $amountQuery = "SELECT SUM((Price + 
+                                            CASE 
+                                                WHEN LOWER(Add_Ons) LIKE '%coffee%' THEN 10 
+                                                WHEN LOWER(Add_Ons) LIKE '%alcohol%' THEN 50 
+                                                ELSE 0 
+                                            END) * Quantity) AS total_amount
+                                    FROM order_items_tbl 
+                                    WHERE Order_ID=?";
+                    $stmtAmount = $connection->prepare($amountQuery);
+                    $stmtAmount->bind_param("s", $Order_ID);
+                    $stmtAmount->execute();
+                    $amountResult = $stmtAmount->get_result()->fetch_assoc();
+                    $totalAmount = $amountResult['total_amount'];
 
-          $result = $connection->query($sql);
+                    // Get customer name
+                    $stmtCust = $connection->prepare("SELECT Customer_Name FROM customer_order_tbl WHERE Order_ID=?");
+                    $stmtCust->bind_param("s", $Order_ID);
+                    $stmtCust->execute();
+                    $customerRow = $stmtCust->get_result()->fetch_assoc();
+                    $customerName = $customerRow['Customer_Name'];
 
-          echo "<table id='userTable' border='1' width='100%'>";
-          echo "<tr align='center' class='tblheader'>
-                  <td><b>Order ID</b></td>
-                  <td><b>Customer Name</b></td>
-                  <td><b>Item (Add-Ons)</b></td>
-                  <td><b>Quantity</b></td>
-                  <td><b>Item Price</b></td>
-                  <td><b>Add-On Price</b></td>
-                  <td><b>Total</b></td> 
-                  <td><b>Subtotal</b></td> 
-                  <td><b>Contact</b></td>
-                  <td><b>Time</b></td>
-                  <td><b>Room Num</b></td>
-                  <td><b>Mode of Service</b></td>
-                  <td><b>Status</b></td>
-                  <td><b>Actions</b></td>
-                </tr>";
+                    // Insert transaction
+                    $insertTransaction = $connection->prepare("INSERT INTO transactions_tbl (Order_ID, Customer_Name, Order_Date, Amount, Status) 
+                                                              VALUES (?, ?, NOW(), ?, 'pending')");
+                    $insertTransaction->bind_param("ssd", $Order_ID, $customerName, $totalAmount);
+                    $insertTransaction->execute();
+                }
+            }
+        }
 
-          if ($result->num_rows > 0) {
-              $prevOrderID = null;
-              $rowspanCount = [];
-              $orderTotal = [];
-              $orderGroups = [];
-              $groupIndex = 0;
+        // Pagination
+        $limit = 10;
+        $page = isset($_GET['page']) ? intval($_GET['page']) : 1;
+        $offset = ($page - 1) * $limit;
 
-              while ($row = $result->fetch_assoc()) {
-                  $Order_ID = $row['Order_ID'];
-                  $addonPrice = (!empty($row['Add_Ons']) && strpos(strtolower($row['Add_Ons']), 'coffee') !== false) ? 10 :
-                                ((!empty($row['Add_Ons']) && strpos(strtolower($row['Add_Ons']), 'alcohol') !== false) ? 50 : 0);
-                  $itemTotal = ($row['Price'] + $addonPrice) * $row['Quantity'];
+        // Count total orders
+        $countResult = $connection->query("SELECT COUNT(DISTINCT Order_ID) AS total_orders FROM customer_order_tbl");
+        $totalOrders = $countResult->fetch_assoc()['total_orders'];
+        $totalPages = ceil($totalOrders / $limit);
 
-                  if (!isset($rowspanCount[$Order_ID])) {
-                      $rowspanCount[$Order_ID] = 1;
-                      $orderTotal[$Order_ID] = $itemTotal;
-                      $orderGroups[$Order_ID] = $groupIndex % 2 == 0 ? "group-even" : "group-odd";
-                      $groupIndex++;
-                  } else {
-                      $rowspanCount[$Order_ID]++;
-                      $orderTotal[$Order_ID] += $itemTotal;
-                  }
-              }
+        // Fetch orders and items
+        $sql = "SELECT c.Order_ID, c.Customer_Name, c.Contact, c.Email, c.Room_Num, c.Mode_of_Service, c.Time,
+                      i.Item_Name, i.Quantity, i.Price, i.Add_Ons, i.Status
+                FROM customer_order_tbl c
+                LEFT JOIN order_items_tbl i ON c.Order_ID = i.Order_ID
+                WHERE i.Order_ID IS NOT NULL
+                ORDER BY c.Order_ID DESC";
+        $result = $connection->query($sql);
 
-              $result->data_seek(0);
-              while ($row = $result->fetch_assoc()) {
-                  $Order_ID = $row['Order_ID'];
-                  $isFirstRow = ($Order_ID != $prevOrderID);
-                  $formattedTime = date("h:i A", strtotime($row['Time'])); 
-                  $roomNumber = ($row['Mode_of_Service'] === "Pickup") ? "---" : $row['Room_Num'];
-                  $rowClass = $orderGroups[$Order_ID]; 
-                  $itemWithAddOns = !empty($row['Add_Ons']) ? $row['Item_Name'] . " (" . $row['Add_Ons'] . ")" : $row['Item_Name'];
+        // Start table
+        echo "<table border='1' width='100%' id='userTable'>
+        <tr align='center' class='tblheader'>
+            <td><b>Order ID</b></td>
+            <td><b>Customer Name</b></td>
+            <td><b>Item (Add-Ons)</b></td>
+            <td><b>Quantity</b></td>
+            <td><b>Item Price</b></td>
+            <td><b>Add-On Price</b></td>
+            <td><b>Total</b></td>
+            <td><b>Subtotal</b></td>
+            <td><b>Contact</b></td>
+            <td><b>Time</b></td>
+            <td><b>Room Num</b></td>
+            <td><b>Mode of Service</b></td>
+            <td><b>Status</b></td>
+            <td><b>Actions</b></td>
+        </tr>";
 
-                  echo '<tr class="' . $rowClass . '">' . ($isFirstRow ? '<td rowspan="' . $rowspanCount[$Order_ID] . '">' . $Order_ID . '</td>
-                                                                        <td rowspan="' . $rowspanCount[$Order_ID] . '">' . $row['Customer_Name'] . '</td>' : '') .
-                        '<td>' . $itemWithAddOns . '</td><td>' . $row['Quantity'] . '</td><td>' . number_format($row['Price'], 2) . '</td>
-                        <td>' . number_format($addonPrice, 2) . '</td><td>' . number_format($itemTotal, 2) . '</td>' .
-                        ($isFirstRow ? '<td rowspan="' . $rowspanCount[$Order_ID] . '"><b>' . number_format($orderTotal[$Order_ID], 2) . '</b></td>
-                                        <td rowspan="' . $rowspanCount[$Order_ID] . '">' . $row['Contact'] . '</td>
-                                        <td rowspan="' . $rowspanCount[$Order_ID] . '">' . $formattedTime . '</td>
-                                        <td rowspan="' . $rowspanCount[$Order_ID] . '">' . $roomNumber . '</td>
-                                        <td rowspan="' . $rowspanCount[$Order_ID] . '">' . $row['Mode_of_Service'] . '</td>
-                                        <td rowspan="' . $rowspanCount[$Order_ID] . '">' . $row['Status'] . '</td>
-                                        <td rowspan="' . $rowspanCount[$Order_ID] . '">        
-                                            <form method="POST" style="display: flex; flex-direction: column; gap: 5px; align-items: center;">
-                                                  <input type="hidden" name="Order_ID" value="' . $Order_ID . '">
-                                                  <button type="submit" name="status" value="confirmed" style="background-color:#177353; color: white; border: none; padding: 10px 10px; cursor: pointer; border-radius: 5px; width: 80px;">Confirm</button>
-                                                  <button type="submit" name="status" value="cancelled" style="background-color:#ac3830; color: white; border: none; padding: 10px 10px; cursor: pointer; border-radius: 5px; width: 80px;">Cancel</button>
-                                            </form>
-                                        </td>' : '') .
-                        '</tr>';
-                  $prevOrderID = $Order_ID;
-              }
-          } else {
-              echo "<tr><td colspan='14' align='center'>No orders found.</td></tr>";
-          }
+        if ($result->num_rows > 0) {
+            $prevOrderID = null;
+            $rowspanCount = [];
+            $orderTotal = [];
+            $orderGroups = [];
+            $groupIndex = 0;
 
-          echo "</table>";
+            while ($row = $result->fetch_assoc()) {
+                $Order_ID = $row['Order_ID'];
+                $addonPrice = (!empty($row['Add_Ons']) && stripos($row['Add_Ons'], 'coffee') !== false) ? 10 :
+                              ((!empty($row['Add_Ons']) && stripos($row['Add_Ons'], 'alcohol') !== false) ? 50 : 0);
+                $itemTotal = ($row['Price'] + $addonPrice) * $row['Quantity'];
+
+                if (!isset($rowspanCount[$Order_ID])) {
+                    $rowspanCount[$Order_ID] = 1;
+                    $orderTotal[$Order_ID] = $itemTotal;
+                    $orderGroups[$Order_ID] = $groupIndex % 2 === 0 ? "group-even" : "group-odd";
+                    $groupIndex++;
+                } else {
+                    $rowspanCount[$Order_ID]++;
+                    $orderTotal[$Order_ID] += $itemTotal;
+                }
+            }
+
+            $result->data_seek(0);
+            while ($row = $result->fetch_assoc()) {
+                $Order_ID = $row['Order_ID'];
+                $isFirstRow = ($Order_ID !== $prevOrderID);
+                $formattedTime = date("h:i A", strtotime($row['Time']));
+                $roomNumber = $row['Mode_of_Service'] === "Pickup" ? "---" : $row['Room_Num'];
+                $rowClass = $orderGroups[$Order_ID];
+                $itemWithAddOns = !empty($row['Add_Ons']) ? $row['Item_Name'] . " (" . $row['Add_Ons'] . ")" : $row['Item_Name'];
+                $addonPrice = (!empty($row['Add_Ons']) && stripos($row['Add_Ons'], 'coffee') !== false) ? 10 :
+                              ((!empty($row['Add_Ons']) && stripos($row['Add_Ons'], 'alcohol') !== false) ? 50 : 0);
+                $itemTotal = ($row['Price'] + $addonPrice) * $row['Quantity'];
+
+                echo "<tr class='{$rowClass}'>" .
+                    ($isFirstRow ? "<td rowspan='{$rowspanCount[$Order_ID]}'>{$Order_ID}</td>
+                                    <td rowspan='{$rowspanCount[$Order_ID]}'>{$row['Customer_Name']}</td>" : "") .
+                    "<td>{$itemWithAddOns}</td>
+                    <td>{$row['Quantity']}</td>
+                    <td>" . number_format($row['Price'], 2) . "</td>
+                    <td>" . number_format($addonPrice, 2) . "</td>
+                    <td>" . number_format($itemTotal, 2) . "</td>" .
+                    ($isFirstRow ? "<td rowspan='{$rowspanCount[$Order_ID]}'><b>" . number_format($orderTotal[$Order_ID], 2) . "</b></td>
+                                    <td rowspan='{$rowspanCount[$Order_ID]}'>{$row['Contact']}</td>
+                                    <td rowspan='{$rowspanCount[$Order_ID]}'>{$formattedTime}</td>
+                                    <td rowspan='{$rowspanCount[$Order_ID]}'>{$roomNumber}</td>
+                                    <td rowspan='{$rowspanCount[$Order_ID]}'>{$row['Mode_of_Service']}</td>
+                                    <td rowspan='{$rowspanCount[$Order_ID]}'>{$row['Status']}</td>
+                                    <td rowspan='{$rowspanCount[$Order_ID]}'>
+                                        <form method='POST' style='display:flex; flex-direction:column; align-items:center; gap:5px;'>
+                                            <input type='hidden' name='Order_ID' value='{$Order_ID}'>
+                                            <button type='submit' name='status' value='confirmed' style='background:#177353; color:white; padding:10px; border:none; border-radius:5px;'>Confirm</button>
+                                            <button type='submit' name='status' value='cancelled' style='background:#ac3830; color:white; padding:10px; border:none; border-radius:5px;'>Cancel</button>
+                                        </form>
+                                    </td>" : "") .
+                    "</tr>";
+                $prevOrderID = $Order_ID;
+            }
+        } else {
+            echo "<tr><td colspan='14' align='center'>No orders found.</td></tr>";
+        }
+
+        echo "</table>";
 
           // Pagination Links
             echo "<div style='text-align: center; margin-top: 20px;'>";

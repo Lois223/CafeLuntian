@@ -92,9 +92,9 @@
       <?php
           include('mycon.php');
 
-          $sql = "SELECT Transaction_ID, Order_ID, Customer_Name, Date_Time, Amount, Status 
+          $sql = "SELECT Transaction_ID, Order_ID, Customer_Name, Order_Date, Amount, Status 
                   FROM transactions_tbl 
-                  ORDER BY Order_ID DESC, Date_Time DESC";
+                  ORDER BY Order_ID DESC, Order_Date DESC";
 
           $result = $connection->query($sql);
 
@@ -132,7 +132,7 @@
               while ($row = $result->fetch_assoc()) {
                   $Order_ID = $row['Order_ID'];
                   $isFirstRow = ($Order_ID != $prevOrderID);
-                  $formattedDateTime = date("Y-m-d h:i A", strtotime($row['Date_Time']));
+                  $formattedDateTime = date("Y-m-d h:i A", strtotime($row['Order_Date']));
                   $rowClass = $orderGroups[$Order_ID];
 
                   echo '<tr class="' . $rowClass . '">' ;

@@ -114,21 +114,17 @@ if (isset($_POST['confirmCheckout'])) {
             $Item_Name = $item['name'];
             $Item_Price = floatval($item['price']);
             $Item_Quantity = intval($item['quantity']);
-            $Subtotal = ($Item_Price + (isset($item['Add_Ons_price']) ? floatval($item['Add_Ons_price']) : 0.00)) * $Item_Quantity;
+            $Subtotal = ($Item_Price + (isset($item['Add_Ons_Price']) ? floatval($item['Add_Ons_Price']) : 0.00)) * $Item_Quantity;
         
-            // Debugging Step - Display received data
-            echo "<pre>";
-            print_r($item);
-            echo "</pre>";
-        
+    
             $Add_Ons = isset($item['Add_Ons']) 
                         ? (is_array($item['Add_Ons']) 
                         ? implode(', ', $item['Add_Ons']) 
                         : $item['Add_Ons']) // If it's already a string, assign directly
                         : null;
 
-            $Add_Ons_Price = isset($item['Add_Ons_price']) 
-                        ? floatval($item['Add_Ons_price']) 
+            $Add_Ons_Price = isset($item['Add_Ons_Price']) 
+                        ? floatval($item['Add_Ons_Price']) 
                         : 0.00;
 
         

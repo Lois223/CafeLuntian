@@ -35,6 +35,9 @@
         <li>
           <a href="adminReservation.php"><span class="material-symbols-outlined">book</span>Reservation</a>
         </li>
+        <li>
+          <a href="adminTransaction.php" class="active"><span class="material-symbols-outlined">receipt_long</span>Transaction</a>
+        </li>
 
         <h4>
           <span>Account</span>
